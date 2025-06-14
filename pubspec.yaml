@@ -8,7 +8,6 @@ environment:
 
 dependencies:
   async: ^2.13.0
-  dio: ^5.8.0+1
   flutter:
     sdk: flutter
   freezed_annotation: ^3.0.0
