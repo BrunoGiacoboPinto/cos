@@ -5,15 +5,22 @@ final class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: const [
-          Text('Welcome to the Home Screen!'),
-          SizedBox(height: 20),
-          Text('This is where you can find various features and information.'),
-        ],
-      ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: TextField(
+            decoration: InputDecoration(
+              hintText: 'Enter the VIN of the vehicle you are looking for',
+              border: const OutlineInputBorder(),
+            ),
+            keyboardType: TextInputType.text,
+            maxLength: 17,
+            buildCounter: (context, {required currentLength, required isFocused, required maxLength}) => const SizedBox.shrink(),
+          ),
+        ),
+      ],
     );
   }
 }
