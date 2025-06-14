@@ -11,23 +11,29 @@ final class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: TextField(
-            decoration: InputDecoration(
-              hintText: 'Enter the VIN of the vehicle you are looking for',
-              border: const OutlineInputBorder(),
-              suffixIcon: Icon(Icons.search),
+    return ListenableBuilder(
+      listenable: viewModel,
+      builder: (context, child) {
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: TextField(
+                decoration: InputDecoration(
+                  hintText: 'Enter the VIN of the vehicle you are looking for',
+                  border: const OutlineInputBorder(),
+                  suffixIcon: Icon(Icons.search),
+                  errorText: viewModel.vniError,
+                ),
+                keyboardType: TextInputType.text,
+                onChanged: viewModel.onVniChanged,
+                maxLength: 17,
+              ),
             ),
-            keyboardType: TextInputType.text,
-            maxLength: 17,
-            buildCounter: (context, {required currentLength, required isFocused, required maxLength}) => const SizedBox.shrink(),
-          ),
-        ),
-      ],
+          ],
+        );
+      },
     );
   }
 }
