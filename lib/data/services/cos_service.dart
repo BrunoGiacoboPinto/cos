@@ -1,16 +1,26 @@
-import 'package:cos_challenge/data/model/cos_response.dart';
-import 'package:cos_challenge/data/model/cos_response.dart';
+import 'dart:convert';
 
-final class CosService {
-  CosService(this._httpClient);
+import 'package:cos/config/environment.dart';
+import 'package:cos/data/model/cos_response.dart';
+import 'package:http/http.dart';
 
-  final HttpClient _httpClient;
+abstract interface class CosService {
+  Future<CosResponse> getData();
+}
 
-  Future<List<CosResponseChoiches>> getCosChoiches() async {
-    final response = await _httpClient.getCosChoiches();
-  }
+final class CosServiceImpl implements CosService {
+  CosServiceImpl(this._httpClient);
 
-  Future<CosResponseData> getCosResponse() async {
-    final response = await _httpClient.getCosResponse();
+  final BaseClient _httpClient;
+
+  @override
+  Future<CosResponse> getData() async {
+    final response = await _httpClient.get(Environment.baseUrl);
+
+    return switch (response.statusCode) {
+      200 => CosResponseWithData.fromJson(jsonDecode(response.body) as Map<String, Object?>),
+      300 => CosResponseWithChoices.fromJson(jsonDecode(response.body) as Map<String, Object?>),
+      _ => CosResponseWithError.fromJson(jsonDecode(response.body) as Map<String, Object?>),
+    };
   }
 }
