@@ -1,5 +1,6 @@
 import 'package:cos/home/view_model/home_view_model.dart';
 import 'package:cos/home/widgets/home_screen.dart';
+import 'package:cos/ui/core/ui/theme/colors.dart';
 import 'package:cos/vehicle_auction/view_model/vehicle_auction_view_model.dart';
 import 'package:cos/vehicle_auction/widgets/vehicle_auction_screen.dart';
 import 'package:flutter/material.dart';
@@ -20,8 +21,10 @@ GoRouter buildAppRouter() {
       ShellRoute(
         builder: (context, state, child) {
           return Scaffold(
+            backgroundColor: darkGray,
             body: SafeArea(child: child),
             bottomNavigationBar: BottomNavigationBar(
+              backgroundColor: darkGray,
               items: const [
                 BottomNavigationBarItem(
                   icon: Icon(Icons.home),
