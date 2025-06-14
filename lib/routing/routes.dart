@@ -1,10 +1,8 @@
-import 'package:cos/home/view_model/home_view_model.dart';
-import 'package:cos/home/view_model/vni_use_case.dart';
 import 'package:cos/home/widgets/home_screen.dart';
 import 'package:cos/ui/core/ui/theme/colors.dart';
-import 'package:cos/vehicle_auction/view_model/vehicle_auction_view_model.dart';
 import 'package:cos/vehicle_auction/widgets/vehicle_auction_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 
 enum AppRoutes {
@@ -15,7 +13,7 @@ enum AppRoutes {
   final String path;
 }
 
-GoRouter buildAppRouter() {
+GoRouter buildAppRouter(GetIt dependencies) {
   return GoRouter(
     initialLocation: AppRoutes.home.path,
     routes: [
@@ -52,17 +50,15 @@ GoRouter buildAppRouter() {
         routes: [
           GoRoute(
             path: AppRoutes.home.path,
-            builder: (context, state) => HomeScreen(
-              viewModel: HomeViewModel(
-                vniValidationUseCase: VNIValidationUseCase(),
-              ), // use getit
-            ),
+            builder: (context, state) {
+              return HomeScreen(viewModel: dependencies.get());
+            },
           ),
           GoRoute(
             path: AppRoutes.auction.path,
-            builder: (context, state) => VehicleAuctionScreen(
-              viewModel: VehicleAuctionViewModel(), // use getit
-            ),
+            builder: (context, state) {
+              return VehicleAuctionScreen(viewModel: dependencies.get());
+            },
           ),
         ],
       ),
