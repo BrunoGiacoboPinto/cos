@@ -1,3 +1,9 @@
+import 'package:cos/ui/core/ui/theme/app_bar.dart';
+import 'package:cos/ui/core/ui/theme/button.dart';
+import 'package:cos/ui/core/ui/theme/card.dart';
+import 'package:cos/ui/core/ui/theme/colors.dart';
+import 'package:cos/ui/core/ui/theme/input_decoration.dart';
+import 'package:cos/ui/core/ui/theme/typhograpy.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';
@@ -38,6 +44,17 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
+      theme: ThemeData(
+        appBarTheme: appBarTheme,
+        colorScheme: colorScheme,
+        cardTheme: cardTheme,
+        elevatedButtonTheme: ElevatedButtonThemeData(style: primaryButtonStyle),
+        outlinedButtonTheme: OutlinedButtonThemeData(style: secondaryButtonStyle),
+        inputDecorationTheme: inputDecorationTheme,
+        textTheme: textTheme,
+        useMaterial3: true,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+      ),
       title: 'CarOnSale',
       debugShowCheckedModeBanner: false,
       routerConfig: buildAppRouter(),
