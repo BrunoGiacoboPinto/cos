@@ -1,11 +1,26 @@
+import 'dart:async';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:stack_trace/stack_trace.dart';
 
 void main() {
-  runApp(const MainApp());
+  Chain.capture(
+    () async {
+      WidgetsFlutterBinding.ensureInitialized();
+      runApp(const App());
+    },
+    onError: (error, stackTrace) {
+      if (kDebugMode) {
+        print('$error:\n${stackTrace.terse}');
+      }
+    },
+    zoneValues: {#flutter.io.allow_http: false},
+  );
 }
 
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+class App extends StatelessWidget {
+  const App({super.key});
 
   @override
   Widget build(BuildContext context) {
