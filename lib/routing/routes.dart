@@ -1,4 +1,5 @@
 import 'package:cos/home/view_model/home_view_model.dart';
+import 'package:cos/home/view_model/vni_use_case.dart';
 import 'package:cos/home/widgets/home_screen.dart';
 import 'package:cos/ui/core/ui/theme/colors.dart';
 import 'package:cos/vehicle_auction/view_model/vehicle_auction_view_model.dart';
@@ -52,7 +53,9 @@ GoRouter buildAppRouter() {
           GoRoute(
             path: AppRoutes.home.path,
             builder: (context, state) => HomeScreen(
-              viewModel: HomeViewModel(), // use getit
+              viewModel: HomeViewModel(
+                vniValidationUseCase: VNIValidationUseCase(),
+              ), // use getit
             ),
           ),
           GoRoute(
