@@ -5,9 +5,14 @@ import 'package:cos/home/view_model/home_view_model.dart';
 import 'package:cos/home/view_model/vni_use_case.dart';
 import 'package:cos/vehicle_auction/view_model/vehicle_auction_view_model.dart';
 import 'package:get_it/get_it.dart';
+import 'package:logging/logging.dart';
 
 Future<GetIt> getItInit() async {
+  final logger = Logger('CosAppLogger');
+  final stopWatch = Stopwatch()..start();
   final getIt = GetIt.instance;
+
+  logger.info('Initializing GetIt dependencies');
 
   getIt.registerLazySingleton<CosService>(
     () => CosServiceImpl(CosChallenge.httpClient),
@@ -31,6 +36,7 @@ Future<GetIt> getItInit() async {
 
   await getIt.allReady();
 
+  logger.info('Finished initializing GetIt dependencies. Time taken: ${stopWatch.elapsedMilliseconds} ms');
   return getIt;
 }
 
