@@ -1,5 +1,5 @@
 import 'package:cos/home/widgets/home_screen.dart';
-import 'package:cos/vehicle_auction/widgets/auction_screen.dart';
+import 'package:cos/vehicle_auction/widgets/vehicle_auction_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
