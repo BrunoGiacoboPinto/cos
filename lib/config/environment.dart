@@ -1,4 +1,4 @@
 
 final class Environment {
-  static const baseUrl = 'https://www.caronsale.com/api';
+  static final baseUrl = Uri.parse('https://www.caronsale.com/api');
 }
