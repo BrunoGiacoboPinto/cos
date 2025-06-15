@@ -5,8 +5,24 @@ part 'car_auction.freezed.dart';
 
 @freezed
 abstract class CarAuction with _$CarAuction {
-  const factory CarAuction({
-    required String id,
+  const factory CarAuction.data(CarAuctionData data) = CarAuctionWithData;
+  const factory CarAuction.choices(List<CarAuctionChoice> choices) = CarAuctionWithChoices;
+  const factory CarAuction.error(CarAuctionError error) = CarAuctionWithError;
+
+  factory CarAuction.fromResponse(CosResponse response) {
+    return switch (response) {
+      CosResponseWithData(data: final data) => CarAuction.data(CarAuctionData.from(data)),
+      CosResponseWithChoices(choices: final choices) => CarAuction.choices([...choices.map(CarAuctionChoice.from)]),
+      CosResponseWithError(error: final error) => CarAuction.error(CarAuctionError.from(error)),
+      _ => throw ArgumentError('Unsupported response type'),
+    };
+  }
+}
+
+@freezed
+abstract class CarAuctionData with _$CarAuctionData {
+  const factory CarAuctionData({
+    required int id,
     required String make,
     required String model,
     required String externalId,
@@ -19,10 +35,10 @@ abstract class CarAuction with _$CarAuction {
     required DateTime inspectorRequestedAt,
     required String origin,
     required String estimationRequestId,
-  }) = _CarAuction;
+  }) = _CarAuctionData;
 
-  factory CarAuction.from(CosResponseData data) {
-    return CarAuction(
+  factory CarAuctionData.from(CosResponseData data) {
+    return CarAuctionData(
       id: data.id,
       make: data.make,
       model: data.model,
