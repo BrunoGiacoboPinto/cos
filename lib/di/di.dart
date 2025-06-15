@@ -29,6 +29,7 @@ Future<GetIt> getItInit() async {
   getIt.registerLazySingleton<HomeViewModel>(
     () => HomeViewModel(
       vniValidationUseCase: getIt<VNIValidationUseCase>(),
+      repository: getIt<CosRepository>(),
     ),
   );
 
