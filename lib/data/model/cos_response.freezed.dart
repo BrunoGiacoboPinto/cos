@@ -461,7 +461,7 @@ as int,
 /// @nodoc
 mixin _$CosResponseData {
 
- String get estimationRequestId; String get externalId; String get feedback; String get fkSellerUser; String get fkUuidAuction; String get id; DateTime get inspectorRequestedAt; String get make; String get model; String get origin; bool get positiveCustomerFeedback; int get price; DateTime get requestedAt; int get similarity; DateTime get updatedAt; DateTime get valuatedAt;
+ String get estimationRequestId; String get externalId; String get feedback;@JsonKey(name: '_fk_sellerUser') String get fkSellerUser;@JsonKey(name: '_fk_uuid_auction') String get fkUuidAuction; int get id; DateTime get inspectorRequestedAt; String get make; String get model; String get origin; bool get positiveCustomerFeedback; int get price; DateTime get requestedAt; DateTime get updatedAt; DateTime get valuatedAt;
 /// Create a copy of CosResponseData
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -474,16 +474,16 @@ $CosResponseDataCopyWith<CosResponseData> get copyWith => _$CosResponseDataCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is CosResponseData&&(identical(other.estimationRequestId, estimationRequestId) || other.estimationRequestId == estimationRequestId)&&(identical(other.externalId, externalId) || other.externalId == externalId)&&(identical(other.feedback, feedback) || other.feedback == feedback)&&(identical(other.fkSellerUser, fkSellerUser) || other.fkSellerUser == fkSellerUser)&&(identical(other.fkUuidAuction, fkUuidAuction) || other.fkUuidAuction == fkUuidAuction)&&(identical(other.id, id) || other.id == id)&&(identical(other.inspectorRequestedAt, inspectorRequestedAt) || other.inspectorRequestedAt == inspectorRequestedAt)&&(identical(other.make, make) || other.make == make)&&(identical(other.model, model) || other.model == model)&&(identical(other.origin, origin) || other.origin == origin)&&(identical(other.positiveCustomerFeedback, positiveCustomerFeedback) || other.positiveCustomerFeedback == positiveCustomerFeedback)&&(identical(other.price, price) || other.price == price)&&(identical(other.requestedAt, requestedAt) || other.requestedAt == requestedAt)&&(identical(other.similarity, similarity) || other.similarity == similarity)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.valuatedAt, valuatedAt) || other.valuatedAt == valuatedAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CosResponseData&&(identical(other.estimationRequestId, estimationRequestId) || other.estimationRequestId == estimationRequestId)&&(identical(other.externalId, externalId) || other.externalId == externalId)&&(identical(other.feedback, feedback) || other.feedback == feedback)&&(identical(other.fkSellerUser, fkSellerUser) || other.fkSellerUser == fkSellerUser)&&(identical(other.fkUuidAuction, fkUuidAuction) || other.fkUuidAuction == fkUuidAuction)&&(identical(other.id, id) || other.id == id)&&(identical(other.inspectorRequestedAt, inspectorRequestedAt) || other.inspectorRequestedAt == inspectorRequestedAt)&&(identical(other.make, make) || other.make == make)&&(identical(other.model, model) || other.model == model)&&(identical(other.origin, origin) || other.origin == origin)&&(identical(other.positiveCustomerFeedback, positiveCustomerFeedback) || other.positiveCustomerFeedback == positiveCustomerFeedback)&&(identical(other.price, price) || other.price == price)&&(identical(other.requestedAt, requestedAt) || other.requestedAt == requestedAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.valuatedAt, valuatedAt) || other.valuatedAt == valuatedAt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,estimationRequestId,externalId,feedback,fkSellerUser,fkUuidAuction,id,inspectorRequestedAt,make,model,origin,positiveCustomerFeedback,price,requestedAt,similarity,updatedAt,valuatedAt);
+int get hashCode => Object.hash(runtimeType,estimationRequestId,externalId,feedback,fkSellerUser,fkUuidAuction,id,inspectorRequestedAt,make,model,origin,positiveCustomerFeedback,price,requestedAt,updatedAt,valuatedAt);
 
 @override
 String toString() {
-  return 'CosResponseData(estimationRequestId: $estimationRequestId, externalId: $externalId, feedback: $feedback, fkSellerUser: $fkSellerUser, fkUuidAuction: $fkUuidAuction, id: $id, inspectorRequestedAt: $inspectorRequestedAt, make: $make, model: $model, origin: $origin, positiveCustomerFeedback: $positiveCustomerFeedback, price: $price, requestedAt: $requestedAt, similarity: $similarity, updatedAt: $updatedAt, valuatedAt: $valuatedAt)';
+  return 'CosResponseData(estimationRequestId: $estimationRequestId, externalId: $externalId, feedback: $feedback, fkSellerUser: $fkSellerUser, fkUuidAuction: $fkUuidAuction, id: $id, inspectorRequestedAt: $inspectorRequestedAt, make: $make, model: $model, origin: $origin, positiveCustomerFeedback: $positiveCustomerFeedback, price: $price, requestedAt: $requestedAt, updatedAt: $updatedAt, valuatedAt: $valuatedAt)';
 }
 
 
@@ -494,7 +494,7 @@ abstract mixin class $CosResponseDataCopyWith<$Res>  {
   factory $CosResponseDataCopyWith(CosResponseData value, $Res Function(CosResponseData) _then) = _$CosResponseDataCopyWithImpl;
 @useResult
 $Res call({
- String estimationRequestId, String externalId, String feedback, String fkSellerUser, String fkUuidAuction, String id, DateTime inspectorRequestedAt, String make, String model, String origin, bool positiveCustomerFeedback, int price, DateTime requestedAt, int similarity, DateTime updatedAt, DateTime valuatedAt
+ String estimationRequestId, String externalId, String feedback,@JsonKey(name: '_fk_sellerUser') String fkSellerUser,@JsonKey(name: '_fk_uuid_auction') String fkUuidAuction, int id, DateTime inspectorRequestedAt, String make, String model, String origin, bool positiveCustomerFeedback, int price, DateTime requestedAt, DateTime updatedAt, DateTime valuatedAt
 });
 
 
@@ -511,7 +511,7 @@ class _$CosResponseDataCopyWithImpl<$Res>
 
 /// Create a copy of CosResponseData
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? estimationRequestId = null,Object? externalId = null,Object? feedback = null,Object? fkSellerUser = null,Object? fkUuidAuction = null,Object? id = null,Object? inspectorRequestedAt = null,Object? make = null,Object? model = null,Object? origin = null,Object? positiveCustomerFeedback = null,Object? price = null,Object? requestedAt = null,Object? similarity = null,Object? updatedAt = null,Object? valuatedAt = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? estimationRequestId = null,Object? externalId = null,Object? feedback = null,Object? fkSellerUser = null,Object? fkUuidAuction = null,Object? id = null,Object? inspectorRequestedAt = null,Object? make = null,Object? model = null,Object? origin = null,Object? positiveCustomerFeedback = null,Object? price = null,Object? requestedAt = null,Object? updatedAt = null,Object? valuatedAt = null,}) {
   return _then(_self.copyWith(
 estimationRequestId: null == estimationRequestId ? _self.estimationRequestId : estimationRequestId // ignore: cast_nullable_to_non_nullable
 as String,externalId: null == externalId ? _self.externalId : externalId // ignore: cast_nullable_to_non_nullable
@@ -519,15 +519,14 @@ as String,feedback: null == feedback ? _self.feedback : feedback // ignore: cast
 as String,fkSellerUser: null == fkSellerUser ? _self.fkSellerUser : fkSellerUser // ignore: cast_nullable_to_non_nullable
 as String,fkUuidAuction: null == fkUuidAuction ? _self.fkUuidAuction : fkUuidAuction // ignore: cast_nullable_to_non_nullable
 as String,id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String,inspectorRequestedAt: null == inspectorRequestedAt ? _self.inspectorRequestedAt : inspectorRequestedAt // ignore: cast_nullable_to_non_nullable
+as int,inspectorRequestedAt: null == inspectorRequestedAt ? _self.inspectorRequestedAt : inspectorRequestedAt // ignore: cast_nullable_to_non_nullable
 as DateTime,make: null == make ? _self.make : make // ignore: cast_nullable_to_non_nullable
 as String,model: null == model ? _self.model : model // ignore: cast_nullable_to_non_nullable
 as String,origin: null == origin ? _self.origin : origin // ignore: cast_nullable_to_non_nullable
 as String,positiveCustomerFeedback: null == positiveCustomerFeedback ? _self.positiveCustomerFeedback : positiveCustomerFeedback // ignore: cast_nullable_to_non_nullable
 as bool,price: null == price ? _self.price : price // ignore: cast_nullable_to_non_nullable
 as int,requestedAt: null == requestedAt ? _self.requestedAt : requestedAt // ignore: cast_nullable_to_non_nullable
-as DateTime,similarity: null == similarity ? _self.similarity : similarity // ignore: cast_nullable_to_non_nullable
-as int,updatedAt: null == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
+as DateTime,updatedAt: null == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
 as DateTime,valuatedAt: null == valuatedAt ? _self.valuatedAt : valuatedAt // ignore: cast_nullable_to_non_nullable
 as DateTime,
   ));
@@ -540,15 +539,15 @@ as DateTime,
 @JsonSerializable()
 @DateTimeConverter()
 class _CosResponseData implements CosResponseData {
-  const _CosResponseData({required this.estimationRequestId, required this.externalId, required this.feedback, required this.fkSellerUser, required this.fkUuidAuction, required this.id, required this.inspectorRequestedAt, required this.make, required this.model, required this.origin, required this.positiveCustomerFeedback, required this.price, required this.requestedAt, required this.similarity, required this.updatedAt, required this.valuatedAt});
+  const _CosResponseData({required this.estimationRequestId, required this.externalId, required this.feedback, @JsonKey(name: '_fk_sellerUser') required this.fkSellerUser, @JsonKey(name: '_fk_uuid_auction') required this.fkUuidAuction, required this.id, required this.inspectorRequestedAt, required this.make, required this.model, required this.origin, required this.positiveCustomerFeedback, required this.price, required this.requestedAt, required this.updatedAt, required this.valuatedAt});
   factory _CosResponseData.fromJson(Map<String, dynamic> json) => _$CosResponseDataFromJson(json);
 
 @override final  String estimationRequestId;
 @override final  String externalId;
 @override final  String feedback;
-@override final  String fkSellerUser;
-@override final  String fkUuidAuction;
-@override final  String id;
+@override@JsonKey(name: '_fk_sellerUser') final  String fkSellerUser;
+@override@JsonKey(name: '_fk_uuid_auction') final  String fkUuidAuction;
+@override final  int id;
 @override final  DateTime inspectorRequestedAt;
 @override final  String make;
 @override final  String model;
@@ -556,7 +555,6 @@ class _CosResponseData implements CosResponseData {
 @override final  bool positiveCustomerFeedback;
 @override final  int price;
 @override final  DateTime requestedAt;
-@override final  int similarity;
 @override final  DateTime updatedAt;
 @override final  DateTime valuatedAt;
 
@@ -573,16 +571,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CosResponseData&&(identical(other.estimationRequestId, estimationRequestId) || other.estimationRequestId == estimationRequestId)&&(identical(other.externalId, externalId) || other.externalId == externalId)&&(identical(other.feedback, feedback) || other.feedback == feedback)&&(identical(other.fkSellerUser, fkSellerUser) || other.fkSellerUser == fkSellerUser)&&(identical(other.fkUuidAuction, fkUuidAuction) || other.fkUuidAuction == fkUuidAuction)&&(identical(other.id, id) || other.id == id)&&(identical(other.inspectorRequestedAt, inspectorRequestedAt) || other.inspectorRequestedAt == inspectorRequestedAt)&&(identical(other.make, make) || other.make == make)&&(identical(other.model, model) || other.model == model)&&(identical(other.origin, origin) || other.origin == origin)&&(identical(other.positiveCustomerFeedback, positiveCustomerFeedback) || other.positiveCustomerFeedback == positiveCustomerFeedback)&&(identical(other.price, price) || other.price == price)&&(identical(other.requestedAt, requestedAt) || other.requestedAt == requestedAt)&&(identical(other.similarity, similarity) || other.similarity == similarity)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.valuatedAt, valuatedAt) || other.valuatedAt == valuatedAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CosResponseData&&(identical(other.estimationRequestId, estimationRequestId) || other.estimationRequestId == estimationRequestId)&&(identical(other.externalId, externalId) || other.externalId == externalId)&&(identical(other.feedback, feedback) || other.feedback == feedback)&&(identical(other.fkSellerUser, fkSellerUser) || other.fkSellerUser == fkSellerUser)&&(identical(other.fkUuidAuction, fkUuidAuction) || other.fkUuidAuction == fkUuidAuction)&&(identical(other.id, id) || other.id == id)&&(identical(other.inspectorRequestedAt, inspectorRequestedAt) || other.inspectorRequestedAt == inspectorRequestedAt)&&(identical(other.make, make) || other.make == make)&&(identical(other.model, model) || other.model == model)&&(identical(other.origin, origin) || other.origin == origin)&&(identical(other.positiveCustomerFeedback, positiveCustomerFeedback) || other.positiveCustomerFeedback == positiveCustomerFeedback)&&(identical(other.price, price) || other.price == price)&&(identical(other.requestedAt, requestedAt) || other.requestedAt == requestedAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.valuatedAt, valuatedAt) || other.valuatedAt == valuatedAt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,estimationRequestId,externalId,feedback,fkSellerUser,fkUuidAuction,id,inspectorRequestedAt,make,model,origin,positiveCustomerFeedback,price,requestedAt,similarity,updatedAt,valuatedAt);
+int get hashCode => Object.hash(runtimeType,estimationRequestId,externalId,feedback,fkSellerUser,fkUuidAuction,id,inspectorRequestedAt,make,model,origin,positiveCustomerFeedback,price,requestedAt,updatedAt,valuatedAt);
 
 @override
 String toString() {
-  return 'CosResponseData(estimationRequestId: $estimationRequestId, externalId: $externalId, feedback: $feedback, fkSellerUser: $fkSellerUser, fkUuidAuction: $fkUuidAuction, id: $id, inspectorRequestedAt: $inspectorRequestedAt, make: $make, model: $model, origin: $origin, positiveCustomerFeedback: $positiveCustomerFeedback, price: $price, requestedAt: $requestedAt, similarity: $similarity, updatedAt: $updatedAt, valuatedAt: $valuatedAt)';
+  return 'CosResponseData(estimationRequestId: $estimationRequestId, externalId: $externalId, feedback: $feedback, fkSellerUser: $fkSellerUser, fkUuidAuction: $fkUuidAuction, id: $id, inspectorRequestedAt: $inspectorRequestedAt, make: $make, model: $model, origin: $origin, positiveCustomerFeedback: $positiveCustomerFeedback, price: $price, requestedAt: $requestedAt, updatedAt: $updatedAt, valuatedAt: $valuatedAt)';
 }
 
 
@@ -593,7 +591,7 @@ abstract mixin class _$CosResponseDataCopyWith<$Res> implements $CosResponseData
   factory _$CosResponseDataCopyWith(_CosResponseData value, $Res Function(_CosResponseData) _then) = __$CosResponseDataCopyWithImpl;
 @override @useResult
 $Res call({
- String estimationRequestId, String externalId, String feedback, String fkSellerUser, String fkUuidAuction, String id, DateTime inspectorRequestedAt, String make, String model, String origin, bool positiveCustomerFeedback, int price, DateTime requestedAt, int similarity, DateTime updatedAt, DateTime valuatedAt
+ String estimationRequestId, String externalId, String feedback,@JsonKey(name: '_fk_sellerUser') String fkSellerUser,@JsonKey(name: '_fk_uuid_auction') String fkUuidAuction, int id, DateTime inspectorRequestedAt, String make, String model, String origin, bool positiveCustomerFeedback, int price, DateTime requestedAt, DateTime updatedAt, DateTime valuatedAt
 });
 
 
@@ -610,7 +608,7 @@ class __$CosResponseDataCopyWithImpl<$Res>
 
 /// Create a copy of CosResponseData
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? estimationRequestId = null,Object? externalId = null,Object? feedback = null,Object? fkSellerUser = null,Object? fkUuidAuction = null,Object? id = null,Object? inspectorRequestedAt = null,Object? make = null,Object? model = null,Object? origin = null,Object? positiveCustomerFeedback = null,Object? price = null,Object? requestedAt = null,Object? similarity = null,Object? updatedAt = null,Object? valuatedAt = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? estimationRequestId = null,Object? externalId = null,Object? feedback = null,Object? fkSellerUser = null,Object? fkUuidAuction = null,Object? id = null,Object? inspectorRequestedAt = null,Object? make = null,Object? model = null,Object? origin = null,Object? positiveCustomerFeedback = null,Object? price = null,Object? requestedAt = null,Object? updatedAt = null,Object? valuatedAt = null,}) {
   return _then(_CosResponseData(
 estimationRequestId: null == estimationRequestId ? _self.estimationRequestId : estimationRequestId // ignore: cast_nullable_to_non_nullable
 as String,externalId: null == externalId ? _self.externalId : externalId // ignore: cast_nullable_to_non_nullable
@@ -618,15 +616,14 @@ as String,feedback: null == feedback ? _self.feedback : feedback // ignore: cast
 as String,fkSellerUser: null == fkSellerUser ? _self.fkSellerUser : fkSellerUser // ignore: cast_nullable_to_non_nullable
 as String,fkUuidAuction: null == fkUuidAuction ? _self.fkUuidAuction : fkUuidAuction // ignore: cast_nullable_to_non_nullable
 as String,id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
-as String,inspectorRequestedAt: null == inspectorRequestedAt ? _self.inspectorRequestedAt : inspectorRequestedAt // ignore: cast_nullable_to_non_nullable
+as int,inspectorRequestedAt: null == inspectorRequestedAt ? _self.inspectorRequestedAt : inspectorRequestedAt // ignore: cast_nullable_to_non_nullable
 as DateTime,make: null == make ? _self.make : make // ignore: cast_nullable_to_non_nullable
 as String,model: null == model ? _self.model : model // ignore: cast_nullable_to_non_nullable
 as String,origin: null == origin ? _self.origin : origin // ignore: cast_nullable_to_non_nullable
 as String,positiveCustomerFeedback: null == positiveCustomerFeedback ? _self.positiveCustomerFeedback : positiveCustomerFeedback // ignore: cast_nullable_to_non_nullable
 as bool,price: null == price ? _self.price : price // ignore: cast_nullable_to_non_nullable
 as int,requestedAt: null == requestedAt ? _self.requestedAt : requestedAt // ignore: cast_nullable_to_non_nullable
-as DateTime,similarity: null == similarity ? _self.similarity : similarity // ignore: cast_nullable_to_non_nullable
-as int,updatedAt: null == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
+as DateTime,updatedAt: null == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
 as DateTime,valuatedAt: null == valuatedAt ? _self.valuatedAt : valuatedAt // ignore: cast_nullable_to_non_nullable
 as DateTime,
   ));

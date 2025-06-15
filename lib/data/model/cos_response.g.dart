@@ -66,9 +66,9 @@ _CosResponseData _$CosResponseDataFromJson(
   estimationRequestId: json['estimationRequestId'] as String,
   externalId: json['externalId'] as String,
   feedback: json['feedback'] as String,
-  fkSellerUser: json['fkSellerUser'] as String,
-  fkUuidAuction: json['fkUuidAuction'] as String,
-  id: json['id'] as String,
+  fkSellerUser: json['_fk_sellerUser'] as String,
+  fkUuidAuction: json['_fk_uuid_auction'] as String,
+  id: (json['id'] as num).toInt(),
   inspectorRequestedAt: const DateTimeConverter().fromJson(
     json['inspectorRequestedAt'] as String,
   ),
@@ -80,7 +80,6 @@ _CosResponseData _$CosResponseDataFromJson(
   requestedAt: const DateTimeConverter().fromJson(
     json['requestedAt'] as String,
   ),
-  similarity: (json['similarity'] as num).toInt(),
   updatedAt: const DateTimeConverter().fromJson(json['updatedAt'] as String),
   valuatedAt: const DateTimeConverter().fromJson(json['valuatedAt'] as String),
 );
@@ -90,8 +89,8 @@ Map<String, dynamic> _$CosResponseDataToJson(_CosResponseData instance) =>
       'estimationRequestId': instance.estimationRequestId,
       'externalId': instance.externalId,
       'feedback': instance.feedback,
-      'fkSellerUser': instance.fkSellerUser,
-      'fkUuidAuction': instance.fkUuidAuction,
+      '_fk_sellerUser': instance.fkSellerUser,
+      '_fk_uuid_auction': instance.fkUuidAuction,
       'id': instance.id,
       'inspectorRequestedAt': const DateTimeConverter().toJson(
         instance.inspectorRequestedAt,
@@ -102,7 +101,6 @@ Map<String, dynamic> _$CosResponseDataToJson(_CosResponseData instance) =>
       'positiveCustomerFeedback': instance.positiveCustomerFeedback,
       'price': instance.price,
       'requestedAt': const DateTimeConverter().toJson(instance.requestedAt),
-      'similarity': instance.similarity,
       'updatedAt': const DateTimeConverter().toJson(instance.updatedAt),
       'valuatedAt': const DateTimeConverter().toJson(instance.valuatedAt),
     };
