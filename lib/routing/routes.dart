@@ -32,6 +32,7 @@ GoRouter buildAppRouter(GetIt dependencies) {
                 elevation: 0,
                 backgroundColor: darkGray,
                 items: const [
+                  // TODO(bpinto): Use l10n for labels
                   BottomNavigationBarItem(
                     icon: Icon(Icons.home),
                     label: 'Home',
