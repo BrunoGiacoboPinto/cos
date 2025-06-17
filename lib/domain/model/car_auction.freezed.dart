@@ -483,8 +483,8 @@ as int,
 /// @nodoc
 
 
-class _CarAuctionChoiceModel implements CarAuctionChoiceModel {
-  const _CarAuctionChoiceModel({required this.externalId, required this.make, required this.model, required this.similarity});
+class _CarAuctionChoiceModel extends CarAuctionChoiceModel {
+  const _CarAuctionChoiceModel({required this.externalId, required this.make, required this.model, required this.similarity}): super._();
   
 
 @override final  String externalId;

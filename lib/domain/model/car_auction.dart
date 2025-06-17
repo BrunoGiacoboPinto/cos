@@ -59,13 +59,20 @@ abstract class CarAuctionDataModel with _$CarAuctionDataModel {
 }
 
 @freezed
-abstract class CarAuctionChoiceModel with _$CarAuctionChoiceModel {
+abstract class CarAuctionChoiceModel with _$CarAuctionChoiceModel implements Comparable<CarAuctionChoiceModel> {
   const factory CarAuctionChoiceModel({
     required String externalId,
     required String make,
     required String model,
     required int similarity,
   }) = _CarAuctionChoiceModel;
+
+  CarAuctionChoiceModel._();
+
+  @override
+  int compareTo(CarAuctionChoiceModel other) {
+    return similarity.compareTo(other.similarity);
+  }
 
   factory CarAuctionChoiceModel.from(CosResponseChoiches choice) {
     return CarAuctionChoiceModel(
