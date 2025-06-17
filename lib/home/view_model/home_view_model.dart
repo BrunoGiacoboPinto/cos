@@ -21,29 +21,22 @@ class HomeScreenLoading extends HomeScreenState {
 class HomeScreenError extends HomeScreenState {
   const HomeScreenError(this.error);
 
-  final CarAuctionError error;
+  final CarAuctionErrorModel error;
 
   String get errorMessage => error.message;
 
-  HomeScreenError copyWith({CarAuctionError? error}) {
+  HomeScreenError copyWith({CarAuctionErrorModel? error}) {
     return HomeScreenError(error ?? this.error);
   }
 }
 
 class HomeScreenCarAuctionLoaded extends HomeScreenState {
-  const HomeScreenCarAuctionLoaded(this.data, this.choices);
+  const HomeScreenCarAuctionLoaded(this.data);
 
-  final CarAuctionData data;
-  final Set<CarAuctionChoice> choices;
+  final CarAuctionModel data;
 
-  HomeScreenCarAuctionLoaded copyWith({
-    CarAuctionData? data,
-    Set<CarAuctionChoice>? choices,
-  }) {
-    return HomeScreenCarAuctionLoaded(
-      data ?? this.data,
-      choices ?? this.choices,
-    );
+  HomeScreenCarAuctionLoaded copyWith({CarAuctionModel? data}) {
+    return HomeScreenCarAuctionLoaded(data ?? this.data);
   }
 }
 
@@ -93,17 +86,25 @@ class HomeViewModel extends ChangeNotifier {
     try {
       final data = await _cosRepository.getCarAuction();
 
-      if (_state case HomeScreenCarAuctionLoaded currentState when data is CarAuctionWithData) {
-        _state = currentState.copyWith(data: data.data);
-      } else if (_state case HomeScreenCarAuctionLoaded currentState when data is CarAuctionWithChoices) {
-        _state = currentState.copyWith(choices: data.choices.toSet());
-      } else if (data is CarAuctionWithError) {
-        _state = HomeScreenError(data.error);
+      if (data case CarAuctionWithChoices(choices: final choices)) {
+        if (_state case HomeScreenCarAuctionLoaded(data: final data) when data is CarAuctionWithChoices) {
+          _state = HomeScreenCarAuctionLoaded(
+            CarAuctionWithChoices(
+              {
+                ...data.choices,
+                ...choices,
+              },
+            ),
+          );
+        }
+      } else {
+        _logger.info('Received (${data.runtimeType}): $data');
+        _state = HomeScreenCarAuctionLoaded(data);
       }
     } catch (error, stackTrace) {
       _logger.severe('Error fetching car auction data', error, Chain.forTrace(stackTrace));
       _state = HomeScreenError(
-        CarAuctionError(
+        CarAuctionErrorModel(
           message: 'Fail to fetch car auction data with error: $error',
           id: 'fetch_error',
         ),
