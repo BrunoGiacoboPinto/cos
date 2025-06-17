@@ -121,16 +121,10 @@ $CarAuctionDataModelCopyWith<$Res> get data {
 
 
 class CarAuctionWithChoices implements CarAuctionModel {
-  const CarAuctionWithChoices(final  Set<CarAuctionChoiceModel> choices): _choices = choices;
+  const CarAuctionWithChoices(this.choices);
   
 
- final  Set<CarAuctionChoiceModel> _choices;
- Set<CarAuctionChoiceModel> get choices {
-  if (_choices is EqualUnmodifiableSetView) return _choices;
-  // ignore: implicit_dynamic_type
-  return EqualUnmodifiableSetView(_choices);
-}
-
+ final  SplayTreeSet<CarAuctionChoiceModel> choices;
 
 /// Create a copy of CarAuctionModel
 /// with the given fields replaced by the non-null parameter values.
@@ -142,12 +136,12 @@ $CarAuctionWithChoicesCopyWith<CarAuctionWithChoices> get copyWith => _$CarAucti
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is CarAuctionWithChoices&&const DeepCollectionEquality().equals(other._choices, _choices));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CarAuctionWithChoices&&const DeepCollectionEquality().equals(other.choices, choices));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_choices));
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(choices));
 
 @override
 String toString() {
@@ -162,7 +156,7 @@ abstract mixin class $CarAuctionWithChoicesCopyWith<$Res> implements $CarAuction
   factory $CarAuctionWithChoicesCopyWith(CarAuctionWithChoices value, $Res Function(CarAuctionWithChoices) _then) = _$CarAuctionWithChoicesCopyWithImpl;
 @useResult
 $Res call({
- Set<CarAuctionChoiceModel> choices
+ SplayTreeSet<CarAuctionChoiceModel> choices
 });
 
 
@@ -181,8 +175,8 @@ class _$CarAuctionWithChoicesCopyWithImpl<$Res>
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') $Res call({Object? choices = null,}) {
   return _then(CarAuctionWithChoices(
-null == choices ? _self._choices : choices // ignore: cast_nullable_to_non_nullable
-as Set<CarAuctionChoiceModel>,
+null == choices ? _self.choices : choices // ignore: cast_nullable_to_non_nullable
+as SplayTreeSet<CarAuctionChoiceModel>,
   ));
 }
 

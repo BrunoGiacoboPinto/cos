@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:cos/data/model/cos_response.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -6,13 +8,18 @@ part 'car_auction.freezed.dart';
 @freezed
 abstract class CarAuctionModel with _$CarAuctionModel {
   const factory CarAuctionModel.data(CarAuctionDataModel data) = CarAuctionWithData;
-  const factory CarAuctionModel.choices(Set<CarAuctionChoiceModel> choices) = CarAuctionWithChoices;
+  const factory CarAuctionModel.choices(SplayTreeSet<CarAuctionChoiceModel> choices) = CarAuctionWithChoices;
   const factory CarAuctionModel.error(CarAuctionErrorModel error) = CarAuctionWithError;
 
   factory CarAuctionModel.fromResponse(CosResponse response) {
     return switch (response) {
       CosResponseWithData(data: final data) => CarAuctionModel.data(CarAuctionDataModel.from(data)),
-      CosResponseWithChoices(choices: final choices) => CarAuctionModel.choices({...choices.map(CarAuctionChoiceModel.from)}),
+      CosResponseWithChoices(choices: final choices) => CarAuctionModel.choices(
+        SplayTreeSet<CarAuctionChoiceModel>.from(
+          choices.map(CarAuctionChoiceModel.from),
+          (a, b) => a.compareTo(b),
+        ),
+      ),
       CosResponseWithError(error: final error) => CarAuctionModel.error(CarAuctionErrorModel.from(error)),
       _ => throw ArgumentError('Unsupported response type'),
     };
@@ -67,7 +74,7 @@ abstract class CarAuctionChoiceModel with _$CarAuctionChoiceModel implements Com
     required int similarity,
   }) = _CarAuctionChoiceModel;
 
-  CarAuctionChoiceModel._();
+  const CarAuctionChoiceModel._();
 
   @override
   int compareTo(CarAuctionChoiceModel other) {
