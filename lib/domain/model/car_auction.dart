@@ -4,12 +4,15 @@ import 'package:cos/data/model/cos_response.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'car_auction.freezed.dart';
+part 'car_auction.g.dart';
 
 @freezed
 abstract class CarAuctionModel with _$CarAuctionModel {
   const factory CarAuctionModel.data(CarAuctionDataModel data) = CarAuctionWithData;
-  const factory CarAuctionModel.choices(SplayTreeSet<CarAuctionChoiceModel> choices) = CarAuctionWithChoices;
+  const factory CarAuctionModel.choices(Set<CarAuctionChoiceModel> choices) = CarAuctionWithChoices;
   const factory CarAuctionModel.error(CarAuctionErrorModel error) = CarAuctionWithError;
+
+  factory CarAuctionModel.fromJson(Map<String, Object?> json) => _$CarAuctionModelFromJson(json);
 
   factory CarAuctionModel.fromResponse(CosResponse response) {
     return switch (response) {
@@ -46,6 +49,8 @@ abstract class CarAuctionDataModel with _$CarAuctionDataModel {
 
   const factory CarAuctionDataModel.empty() = CarAuctionEmptyModel;
 
+  factory CarAuctionDataModel.fromJson(Map<String, Object?> json) => _$CarAuctionDataModelFromJson(json);
+
   factory CarAuctionDataModel.from(CosResponseData data) {
     return CarAuctionDataModel.data(
       id: data.id,
@@ -81,6 +86,8 @@ abstract class CarAuctionChoiceModel with _$CarAuctionChoiceModel implements Com
     return similarity.compareTo(other.similarity);
   }
 
+  factory CarAuctionChoiceModel.fromJson(Map<String, Object?> json) => _$CarAuctionChoiceModelFromJson(json);
+
   factory CarAuctionChoiceModel.from(CosResponseChoiches choice) {
     return CarAuctionChoiceModel(
       externalId: choice.externalId,
@@ -97,6 +104,8 @@ abstract class CarAuctionErrorModel with _$CarAuctionErrorModel {
     required String message,
     required String id,
   }) = _CarAuctionErrorModel;
+
+  factory CarAuctionErrorModel.fromJson(Map<String, Object?> json) => _$CarAuctionErrorModelFromJson(json);
 
   factory CarAuctionErrorModel.from(CosResponseError error) {
     return CarAuctionErrorModel(

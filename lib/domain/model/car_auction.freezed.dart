@@ -12,11 +12,41 @@ part of 'car_auction.dart';
 
 // dart format off
 T _$identity<T>(T value) => value;
+CarAuctionModel _$CarAuctionModelFromJson(
+  Map<String, dynamic> json
+) {
+        switch (json['runtimeType']) {
+                  case 'data':
+          return CarAuctionWithData.fromJson(
+            json
+          );
+                case 'choices':
+          return CarAuctionWithChoices.fromJson(
+            json
+          );
+                case 'error':
+          return CarAuctionWithError.fromJson(
+            json
+          );
+        
+          default:
+            throw CheckedFromJsonException(
+  json,
+  'runtimeType',
+  'CarAuctionModel',
+  'Invalid union type "${json['runtimeType']}"!'
+);
+        }
+      
+}
+
 /// @nodoc
 mixin _$CarAuctionModel {
 
 
 
+  /// Serializes this CarAuctionModel to a JSON map.
+  Map<String, dynamic> toJson();
 
 
 @override
@@ -24,7 +54,7 @@ bool operator ==(Object other) {
   return identical(this, other) || (other.runtimeType == runtimeType&&other is CarAuctionModel);
 }
 
-
+@JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode => runtimeType.hashCode;
 
@@ -43,13 +73,17 @@ $CarAuctionModelCopyWith(CarAuctionModel _, $Res Function(CarAuctionModel) __);
 
 
 /// @nodoc
-
+@JsonSerializable()
 
 class CarAuctionWithData implements CarAuctionModel {
-  const CarAuctionWithData(this.data);
-  
+  const CarAuctionWithData(this.data, {final  String? $type}): $type = $type ?? 'data';
+  factory CarAuctionWithData.fromJson(Map<String, dynamic> json) => _$CarAuctionWithDataFromJson(json);
 
  final  CarAuctionDataModel data;
+
+@JsonKey(name: 'runtimeType')
+final String $type;
+
 
 /// Create a copy of CarAuctionModel
 /// with the given fields replaced by the non-null parameter values.
@@ -57,14 +91,17 @@ class CarAuctionWithData implements CarAuctionModel {
 @pragma('vm:prefer-inline')
 $CarAuctionWithDataCopyWith<CarAuctionWithData> get copyWith => _$CarAuctionWithDataCopyWithImpl<CarAuctionWithData>(this, _$identity);
 
-
+@override
+Map<String, dynamic> toJson() {
+  return _$CarAuctionWithDataToJson(this, );
+}
 
 @override
 bool operator ==(Object other) {
   return identical(this, other) || (other.runtimeType == runtimeType&&other is CarAuctionWithData&&(identical(other.data, data) || other.data == data));
 }
 
-
+@JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode => Object.hash(runtimeType,data);
 
@@ -118,13 +155,23 @@ $CarAuctionDataModelCopyWith<$Res> get data {
 }
 
 /// @nodoc
-
+@JsonSerializable()
 
 class CarAuctionWithChoices implements CarAuctionModel {
-  const CarAuctionWithChoices(this.choices);
-  
+  const CarAuctionWithChoices(final  Set<CarAuctionChoiceModel> choices, {final  String? $type}): _choices = choices,$type = $type ?? 'choices';
+  factory CarAuctionWithChoices.fromJson(Map<String, dynamic> json) => _$CarAuctionWithChoicesFromJson(json);
 
- final  SplayTreeSet<CarAuctionChoiceModel> choices;
+ final  Set<CarAuctionChoiceModel> _choices;
+ Set<CarAuctionChoiceModel> get choices {
+  if (_choices is EqualUnmodifiableSetView) return _choices;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableSetView(_choices);
+}
+
+
+@JsonKey(name: 'runtimeType')
+final String $type;
+
 
 /// Create a copy of CarAuctionModel
 /// with the given fields replaced by the non-null parameter values.
@@ -132,16 +179,19 @@ class CarAuctionWithChoices implements CarAuctionModel {
 @pragma('vm:prefer-inline')
 $CarAuctionWithChoicesCopyWith<CarAuctionWithChoices> get copyWith => _$CarAuctionWithChoicesCopyWithImpl<CarAuctionWithChoices>(this, _$identity);
 
-
+@override
+Map<String, dynamic> toJson() {
+  return _$CarAuctionWithChoicesToJson(this, );
+}
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is CarAuctionWithChoices&&const DeepCollectionEquality().equals(other.choices, choices));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CarAuctionWithChoices&&const DeepCollectionEquality().equals(other._choices, _choices));
 }
 
-
+@JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(choices));
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_choices));
 
 @override
 String toString() {
@@ -156,7 +206,7 @@ abstract mixin class $CarAuctionWithChoicesCopyWith<$Res> implements $CarAuction
   factory $CarAuctionWithChoicesCopyWith(CarAuctionWithChoices value, $Res Function(CarAuctionWithChoices) _then) = _$CarAuctionWithChoicesCopyWithImpl;
 @useResult
 $Res call({
- SplayTreeSet<CarAuctionChoiceModel> choices
+ Set<CarAuctionChoiceModel> choices
 });
 
 
@@ -175,8 +225,8 @@ class _$CarAuctionWithChoicesCopyWithImpl<$Res>
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') $Res call({Object? choices = null,}) {
   return _then(CarAuctionWithChoices(
-null == choices ? _self.choices : choices // ignore: cast_nullable_to_non_nullable
-as SplayTreeSet<CarAuctionChoiceModel>,
+null == choices ? _self._choices : choices // ignore: cast_nullable_to_non_nullable
+as Set<CarAuctionChoiceModel>,
   ));
 }
 
@@ -184,13 +234,17 @@ as SplayTreeSet<CarAuctionChoiceModel>,
 }
 
 /// @nodoc
-
+@JsonSerializable()
 
 class CarAuctionWithError implements CarAuctionModel {
-  const CarAuctionWithError(this.error);
-  
+  const CarAuctionWithError(this.error, {final  String? $type}): $type = $type ?? 'error';
+  factory CarAuctionWithError.fromJson(Map<String, dynamic> json) => _$CarAuctionWithErrorFromJson(json);
 
  final  CarAuctionErrorModel error;
+
+@JsonKey(name: 'runtimeType')
+final String $type;
+
 
 /// Create a copy of CarAuctionModel
 /// with the given fields replaced by the non-null parameter values.
@@ -198,14 +252,17 @@ class CarAuctionWithError implements CarAuctionModel {
 @pragma('vm:prefer-inline')
 $CarAuctionWithErrorCopyWith<CarAuctionWithError> get copyWith => _$CarAuctionWithErrorCopyWithImpl<CarAuctionWithError>(this, _$identity);
 
-
+@override
+Map<String, dynamic> toJson() {
+  return _$CarAuctionWithErrorToJson(this, );
+}
 
 @override
 bool operator ==(Object other) {
   return identical(this, other) || (other.runtimeType == runtimeType&&other is CarAuctionWithError&&(identical(other.error, error) || other.error == error));
 }
 
-
+@JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode => Object.hash(runtimeType,error);
 
@@ -258,11 +315,37 @@ $CarAuctionErrorModelCopyWith<$Res> get error {
 }
 }
 
+CarAuctionDataModel _$CarAuctionDataModelFromJson(
+  Map<String, dynamic> json
+) {
+        switch (json['runtimeType']) {
+                  case 'data':
+          return CarAuctionWithDataModel.fromJson(
+            json
+          );
+                case 'empty':
+          return CarAuctionEmptyModel.fromJson(
+            json
+          );
+        
+          default:
+            throw CheckedFromJsonException(
+  json,
+  'runtimeType',
+  'CarAuctionDataModel',
+  'Invalid union type "${json['runtimeType']}"!'
+);
+        }
+      
+}
+
 /// @nodoc
 mixin _$CarAuctionDataModel {
 
 
 
+  /// Serializes this CarAuctionDataModel to a JSON map.
+  Map<String, dynamic> toJson();
 
 
 @override
@@ -270,7 +353,7 @@ bool operator ==(Object other) {
   return identical(this, other) || (other.runtimeType == runtimeType&&other is CarAuctionDataModel);
 }
 
-
+@JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode => runtimeType.hashCode;
 
@@ -289,11 +372,11 @@ $CarAuctionDataModelCopyWith(CarAuctionDataModel _, $Res Function(CarAuctionData
 
 
 /// @nodoc
-
+@JsonSerializable()
 
 class CarAuctionWithDataModel implements CarAuctionDataModel {
-  const CarAuctionWithDataModel({required this.id, required this.make, required this.model, required this.externalId, required this.price, required this.fkSellerUser, required this.fkUuidAuction, required this.requestedAt, required this.updatedAt, required this.positiveCustomerFeedback, required this.inspectorRequestedAt, required this.origin, required this.estimationRequestId});
-  
+  const CarAuctionWithDataModel({required this.id, required this.make, required this.model, required this.externalId, required this.price, required this.fkSellerUser, required this.fkUuidAuction, required this.requestedAt, required this.updatedAt, required this.positiveCustomerFeedback, required this.inspectorRequestedAt, required this.origin, required this.estimationRequestId, final  String? $type}): $type = $type ?? 'data';
+  factory CarAuctionWithDataModel.fromJson(Map<String, dynamic> json) => _$CarAuctionWithDataModelFromJson(json);
 
  final  int id;
  final  String make;
@@ -309,20 +392,27 @@ class CarAuctionWithDataModel implements CarAuctionDataModel {
  final  String origin;
  final  String estimationRequestId;
 
+@JsonKey(name: 'runtimeType')
+final String $type;
+
+
 /// Create a copy of CarAuctionDataModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
 $CarAuctionWithDataModelCopyWith<CarAuctionWithDataModel> get copyWith => _$CarAuctionWithDataModelCopyWithImpl<CarAuctionWithDataModel>(this, _$identity);
 
-
+@override
+Map<String, dynamic> toJson() {
+  return _$CarAuctionWithDataModelToJson(this, );
+}
 
 @override
 bool operator ==(Object other) {
   return identical(this, other) || (other.runtimeType == runtimeType&&other is CarAuctionWithDataModel&&(identical(other.id, id) || other.id == id)&&(identical(other.make, make) || other.make == make)&&(identical(other.model, model) || other.model == model)&&(identical(other.externalId, externalId) || other.externalId == externalId)&&(identical(other.price, price) || other.price == price)&&(identical(other.fkSellerUser, fkSellerUser) || other.fkSellerUser == fkSellerUser)&&(identical(other.fkUuidAuction, fkUuidAuction) || other.fkUuidAuction == fkUuidAuction)&&(identical(other.requestedAt, requestedAt) || other.requestedAt == requestedAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.positiveCustomerFeedback, positiveCustomerFeedback) || other.positiveCustomerFeedback == positiveCustomerFeedback)&&(identical(other.inspectorRequestedAt, inspectorRequestedAt) || other.inspectorRequestedAt == inspectorRequestedAt)&&(identical(other.origin, origin) || other.origin == origin)&&(identical(other.estimationRequestId, estimationRequestId) || other.estimationRequestId == estimationRequestId));
 }
 
-
+@JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode => Object.hash(runtimeType,id,make,model,externalId,price,fkSellerUser,fkUuidAuction,requestedAt,updatedAt,positiveCustomerFeedback,inspectorRequestedAt,origin,estimationRequestId);
 
@@ -379,23 +469,30 @@ as String,
 }
 
 /// @nodoc
-
+@JsonSerializable()
 
 class CarAuctionEmptyModel implements CarAuctionDataModel {
-  const CarAuctionEmptyModel();
-  
+  const CarAuctionEmptyModel({final  String? $type}): $type = $type ?? 'empty';
+  factory CarAuctionEmptyModel.fromJson(Map<String, dynamic> json) => _$CarAuctionEmptyModelFromJson(json);
 
 
 
+@JsonKey(name: 'runtimeType')
+final String $type;
 
 
+
+@override
+Map<String, dynamic> toJson() {
+  return _$CarAuctionEmptyModelToJson(this, );
+}
 
 @override
 bool operator ==(Object other) {
   return identical(this, other) || (other.runtimeType == runtimeType&&other is CarAuctionEmptyModel);
 }
 
-
+@JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode => runtimeType.hashCode;
 
@@ -410,6 +507,7 @@ String toString() {
 
 
 
+
 /// @nodoc
 mixin _$CarAuctionChoiceModel {
 
@@ -420,6 +518,8 @@ mixin _$CarAuctionChoiceModel {
 @pragma('vm:prefer-inline')
 $CarAuctionChoiceModelCopyWith<CarAuctionChoiceModel> get copyWith => _$CarAuctionChoiceModelCopyWithImpl<CarAuctionChoiceModel>(this as CarAuctionChoiceModel, _$identity);
 
+  /// Serializes this CarAuctionChoiceModel to a JSON map.
+  Map<String, dynamic> toJson();
 
 
 @override
@@ -427,7 +527,7 @@ bool operator ==(Object other) {
   return identical(this, other) || (other.runtimeType == runtimeType&&other is CarAuctionChoiceModel&&(identical(other.externalId, externalId) || other.externalId == externalId)&&(identical(other.make, make) || other.make == make)&&(identical(other.model, model) || other.model == model)&&(identical(other.similarity, similarity) || other.similarity == similarity));
 }
 
-
+@JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode => Object.hash(runtimeType,externalId,make,model,similarity);
 
@@ -475,11 +575,11 @@ as int,
 
 
 /// @nodoc
-
+@JsonSerializable()
 
 class _CarAuctionChoiceModel extends CarAuctionChoiceModel {
   const _CarAuctionChoiceModel({required this.externalId, required this.make, required this.model, required this.similarity}): super._();
-  
+  factory _CarAuctionChoiceModel.fromJson(Map<String, dynamic> json) => _$CarAuctionChoiceModelFromJson(json);
 
 @override final  String externalId;
 @override final  String make;
@@ -492,14 +592,17 @@ class _CarAuctionChoiceModel extends CarAuctionChoiceModel {
 @pragma('vm:prefer-inline')
 _$CarAuctionChoiceModelCopyWith<_CarAuctionChoiceModel> get copyWith => __$CarAuctionChoiceModelCopyWithImpl<_CarAuctionChoiceModel>(this, _$identity);
 
-
+@override
+Map<String, dynamic> toJson() {
+  return _$CarAuctionChoiceModelToJson(this, );
+}
 
 @override
 bool operator ==(Object other) {
   return identical(this, other) || (other.runtimeType == runtimeType&&other is _CarAuctionChoiceModel&&(identical(other.externalId, externalId) || other.externalId == externalId)&&(identical(other.make, make) || other.make == make)&&(identical(other.model, model) || other.model == model)&&(identical(other.similarity, similarity) || other.similarity == similarity));
 }
 
-
+@JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode => Object.hash(runtimeType,externalId,make,model,similarity);
 
@@ -546,6 +649,7 @@ as int,
 
 }
 
+
 /// @nodoc
 mixin _$CarAuctionErrorModel {
 
@@ -556,6 +660,8 @@ mixin _$CarAuctionErrorModel {
 @pragma('vm:prefer-inline')
 $CarAuctionErrorModelCopyWith<CarAuctionErrorModel> get copyWith => _$CarAuctionErrorModelCopyWithImpl<CarAuctionErrorModel>(this as CarAuctionErrorModel, _$identity);
 
+  /// Serializes this CarAuctionErrorModel to a JSON map.
+  Map<String, dynamic> toJson();
 
 
 @override
@@ -563,7 +669,7 @@ bool operator ==(Object other) {
   return identical(this, other) || (other.runtimeType == runtimeType&&other is CarAuctionErrorModel&&(identical(other.message, message) || other.message == message)&&(identical(other.id, id) || other.id == id));
 }
 
-
+@JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode => Object.hash(runtimeType,message,id);
 
@@ -609,11 +715,11 @@ as String,
 
 
 /// @nodoc
-
+@JsonSerializable()
 
 class _CarAuctionErrorModel implements CarAuctionErrorModel {
   const _CarAuctionErrorModel({required this.message, required this.id});
-  
+  factory _CarAuctionErrorModel.fromJson(Map<String, dynamic> json) => _$CarAuctionErrorModelFromJson(json);
 
 @override final  String message;
 @override final  String id;
@@ -624,14 +730,17 @@ class _CarAuctionErrorModel implements CarAuctionErrorModel {
 @pragma('vm:prefer-inline')
 _$CarAuctionErrorModelCopyWith<_CarAuctionErrorModel> get copyWith => __$CarAuctionErrorModelCopyWithImpl<_CarAuctionErrorModel>(this, _$identity);
 
-
+@override
+Map<String, dynamic> toJson() {
+  return _$CarAuctionErrorModelToJson(this, );
+}
 
 @override
 bool operator ==(Object other) {
   return identical(this, other) || (other.runtimeType == runtimeType&&other is _CarAuctionErrorModel&&(identical(other.message, message) || other.message == message)&&(identical(other.id, id) || other.id == id));
 }
 
-
+@JsonKey(includeFromJson: false, includeToJson: false)
 @override
 int get hashCode => Object.hash(runtimeType,message,id);
 
