@@ -13,7 +13,9 @@ sealed class HomeScreenState {
 }
 
 class HomeScreenInitial extends HomeScreenState {
-  const HomeScreenInitial();
+  const HomeScreenInitial(this.data);
+
+  final Map<String, CarAuctionModel> data;
 }
 
 class HomeScreenLoading extends HomeScreenState {
@@ -59,13 +61,30 @@ class HomeViewModel extends ChangeNotifier {
     required VNIValidationUseCase vniValidationUseCase,
     required CosRepository repository,
   }) : _vniValidationUseCase = vniValidationUseCase,
-       _cosRepository = repository;
+       _cosRepository = repository {
+    repository
+        .getAllCarAuctions()
+        .then((data) {
+          _state = HomeScreenInitial(data);
+          notifyListeners();
+        })
+        .catchError((error, stackTrace) {
+          _logger.severe('Error fetching initial car auctions', error, Chain.forTrace(stackTrace));
+          _state = HomeScreenError(
+            CarAuctionErrorModel(
+              message: error.toString(),
+              id: 'initial_fetch_error',
+            ),
+          );
+          notifyListeners();
+        });
+  }
 
   static final _logger = Logger('HomeViewModel');
   final VNIValidationUseCase _vniValidationUseCase;
   final CosRepository _cosRepository;
 
-  HomeScreenState _state = const HomeScreenInitial();
+  HomeScreenState _state = const HomeScreenLoading();
   HomeScreenState get state => _state;
 
   void onVniChanged(String value) {
