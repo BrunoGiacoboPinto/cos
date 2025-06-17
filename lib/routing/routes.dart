@@ -22,7 +22,7 @@ GoRouter buildAppRouter(GetIt dependencies) {
       ShellRoute(
         builder: (context, state, child) {
           return Scaffold(
-            backgroundColor: darkGray,
+            backgroundColor: Theme.of(context).colorScheme.onSurface,
             body: SafeArea(child: child),
             bottomNavigationBar: Theme(
               data: Theme.of(context).copyWith(
