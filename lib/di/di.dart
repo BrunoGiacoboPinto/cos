@@ -1,6 +1,9 @@
 import 'package:cos/data/api/cos_api.dart';
+import 'package:cos/data/cos_data_access_interface.dart';
 import 'package:cos/data/repositories/cos_repository.dart';
-import 'package:cos/data/services/cos_service.dart';
+import 'package:cos/data/services/cos_memory_service.dart';
+import 'package:cos/data/services/cos_remote_service.dart';
+import 'package:cos/data/services/cos_storage_service.dart';
 import 'package:cos/home/view_model/home_view_model.dart';
 import 'package:cos/home/view_model/vni_use_case.dart';
 import 'package:cos/vehicle_auction/view_model/vehicle_auction_view_model.dart';
@@ -14,14 +17,18 @@ Future<GetIt> getItInit() async {
 
   logger.info('Initializing GetIt dependencies');
 
-  getIt.registerLazySingleton<CosService>(
-    () => RemoteCosServiceImpl(CosChallenge.httpClient),
+  getIt.registerLazySingleton<CosRemoteService>(
+    () => CosRemoteService(CosChallenge.httpClient),
   );
+
+  getIt.registerLazySingleton<CosStorageService>(() => CosStorageService());
+  getIt.registerLazySingleton<CosMemoryService>(() => CosMemoryService());
 
   getIt.registerLazySingleton<CosRepository>(() {
     return CosRepository(
-      remoteService: getIt<CosService>(),
-      localService: getIt<CosService>(),
+      remoteService: getIt<CosRemoteService>(),
+      localService: getIt<CosStorageService>(),
+      memoryCosService: getIt<CosMemoryService>(),
     );
   });
 
@@ -44,7 +51,7 @@ Future<GetIt> getItInit() async {
 void disposetGetIt() {
   final getIt = GetIt.instance;
   getIt.reset();
-  getIt.unregister<CosService>();
+  getIt.unregister<CosServiceAccess>();
   getIt.unregister<CosRepository>();
   getIt.unregister<VNIValidationUseCase>();
   getIt.unregister<HomeViewModel>();
