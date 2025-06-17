@@ -1,5 +1,6 @@
 import 'package:cos/domain/model/car_auction.dart';
 import 'package:cos/home/view_model/home_view_model.dart';
+import 'package:cos/ui/core/ui/auction_card.dart';
 import 'package:cos/ui/core/ui/theme/spacing.dart';
 import 'package:flutter/material.dart';
 
@@ -66,21 +67,19 @@ class _HomeScreenState extends State<HomeScreen> {
             },
           ),
         ),
-        Expanded(
-          child: ListenableBuilder(
-            listenable: widget.viewModel,
-            builder: (context, child) {
-              return AnimatedSwitcher(
-                duration: const Duration(milliseconds: 300),
-                child: switch (widget.viewModel.state) {
-                  HomeScreenInitial() || HomeScreenVNIValid() || HomeScreenVNIError() => const SizedBox.shrink(),
-                  HomeScreenLoading() => Center(child: const CircularProgressIndicator()),
-                  HomeScreenError(error: final error) => Text(error.message, style: TextStyle(color: Colors.red)),
-                  HomeScreenCarAuctionLoaded(data: final data) => HomeScreenCarAuctionView(model: data),
-                },
-              );
-            },
-          ),
+        ListenableBuilder(
+          listenable: widget.viewModel,
+          builder: (context, child) {
+            return AnimatedSwitcher(
+              duration: const Duration(milliseconds: 300),
+              child: switch (widget.viewModel.state) {
+                HomeScreenInitial() || HomeScreenVNIValid() || HomeScreenVNIError() => const SizedBox.shrink(),
+                HomeScreenLoading() => Center(child: const CircularProgressIndicator()),
+                HomeScreenError(error: final error) => Text(error.message, style: TextStyle(color: Colors.red)),
+                HomeScreenCarAuctionLoaded(data: final data) => HomeScreenCarAuctionView(model: data),
+              },
+            );
+          },
         ),
       ],
     );
@@ -99,10 +98,7 @@ final class HomeScreenCarAuctionView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return switch (model) {
-      CarAuctionWithData(data: final CarAuctionWithDataModel data) => Text(
-        'CarAuctionWithDataModel: ${data.make} ${data.model} - \$${data.price}',
-        style: TextStyle(color: Colors.red),
-      ),
+      CarAuctionWithData(data: final CarAuctionWithDataModel data) => AuctionCard(model: data),
       CarAuctionWithChoices(choices: final choices) => Center(
         child: ListView.builder(
           itemCount: choices.length, // No choices available
@@ -120,7 +116,7 @@ final class HomeScreenCarAuctionView extends StatelessWidget {
       CarAuctionWithError(error: final error) => Center(
         child: Text(error.message, style: TextStyle(color: Colors.red)),
       ),
-      CarAuctionModel() => throw UnimplementedError(),
+      CarAuctionModel() => const SizedBox.shrink(),
     };
   }
 }
