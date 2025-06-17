@@ -76,7 +76,8 @@ class _HomeScreenState extends State<HomeScreen> {
               return AnimatedSwitcher(
                 duration: const Duration(milliseconds: 300),
                 child: switch (widget.viewModel.state) {
-                  HomeScreenInitial() || HomeScreenVNIValid() || HomeScreenVNIError() => const HomeScreenSearchView(),
+                  HomeScreenVNIValid() || HomeScreenVNIError() => const HomeScreenSearchView(),
+                  HomeScreenInitial(data: final data) => HomeScreenInitialView(initialData: data),
                   HomeScreenLoading() => Center(child: const CircularProgressIndicator()),
                   HomeScreenError(error: final error) => HomeScreenErrorView(error: error.message),
                   HomeScreenCarAuctionLoaded(data: final data) => HomeScreenCarAuctionView(model: data),
@@ -87,6 +88,35 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ],
     );
+  }
+}
+
+@visibleForTesting
+final class HomeScreenInitialView extends StatelessWidget {
+  const HomeScreenInitialView({
+    super.key,
+    required this.initialData,
+  });
+
+  final Map<String, CarAuctionModel> initialData;
+
+  @override
+  Widget build(BuildContext context) {
+    return initialData.isEmpty
+        ? const HomeScreenSearchView()
+        : ListView.builder(
+            padding: const EdgeInsets.all(spaceSm),
+            itemCount: initialData.length,
+            itemBuilder: (context, index) {
+              final key = initialData.keys.elementAt(index);
+              final model = initialData[key];
+              if (model case CarAuctionWithData(data: final CarAuctionWithDataModel data)) {
+                return AuctionCard(model: data);
+              } else {
+                return const SizedBox.shrink();
+              }
+            },
+          );
   }
 }
 
