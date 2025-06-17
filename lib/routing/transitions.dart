@@ -43,9 +43,17 @@ final class _PageViewTransition extends StatelessWidget {
       end: Offset.zero,
     ).animate(curvedAnimation);
 
-    return SlideTransition(
-      position: slideAnimation,
-      child: child,
+    final fadeAnimation = CurvedAnimation(
+      parent: animation,
+      curve: const Interval(0.0, 1.0, curve: Curves.easeIn),
+    );
+
+    return FadeTransition(
+      opacity: fadeAnimation,
+      child: SlideTransition(
+        position: slideAnimation,
+        child: child,
+      ),
     );
   }
 }
