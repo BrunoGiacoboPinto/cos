@@ -10,9 +10,9 @@ class CosRepository {
   final CosService remoteService;
   final CosService localService;
 
-  Future<CarAuction?> getCarAuction() async {
+  Future<CarAuctionModel> getCarAuction() async {
     final response = await remoteService.getData();
     
-    return CarAuction.fromResponse(response);
+    return CarAuctionModel.fromResponse(response);
   }
 }
