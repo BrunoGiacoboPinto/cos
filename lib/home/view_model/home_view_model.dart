@@ -73,18 +73,18 @@ class HomeViewModel extends ChangeNotifier {
       _state = HomeScreenVNIError(validation);
     } else {
       _state = HomeScreenVNIValid();
-      _fetchCarAuctionData();
+      _fetchCarAuctionData(value);
     }
 
     notifyListeners();
   }
 
-  Future<void> _fetchCarAuctionData() async {
+  Future<void> _fetchCarAuctionData(String key) async {
     _state = const HomeScreenLoading();
     notifyListeners();
 
     try {
-      final data = await _cosRepository.getCarAuction();
+      final data = await _cosRepository.getCarAuction(key: key);
 
       if (data case CarAuctionWithChoices(choices: final choices)) {
         if (_state case HomeScreenCarAuctionLoaded(data: final data) when data is CarAuctionWithChoices) {
@@ -99,7 +99,15 @@ class HomeViewModel extends ChangeNotifier {
         }
       } else {
         _logger.info('Received (${data.runtimeType}): $data');
-        _state = HomeScreenCarAuctionLoaded(data);
+        _state = HomeScreenCarAuctionLoaded(
+          data ??
+              CarAuctionModel.error(
+                CarAuctionErrorModel(
+                  message: 'No data found for key: $key',
+                  id: 'no_data',
+                ),
+              ),
+        );
       }
     } catch (error, stackTrace) {
       _logger.severe('Error fetching car auction data', error, Chain.forTrace(stackTrace));
