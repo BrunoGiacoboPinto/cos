@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import 'package:cos/data/repositories/cos_repository.dart';
 import 'package:cos/domain/model/car_auction.dart';
 import 'package:flutter/material.dart';
@@ -90,10 +92,10 @@ class HomeViewModel extends ChangeNotifier {
         if (_state case HomeScreenCarAuctionLoaded(data: final data) when data is CarAuctionWithChoices) {
           _state = HomeScreenCarAuctionLoaded(
             CarAuctionWithChoices(
-              {
-                ...data.choices,
-                ...choices,
-              },
+              SplayTreeSet<CarAuctionChoiceModel>.from(
+                data.choices.union(choices),
+                (a, b) => a.compareTo(b),
+              ),
             ),
           );
         }
