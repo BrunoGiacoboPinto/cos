@@ -53,3 +53,38 @@ final ctaButtonStyle = ElevatedButton.styleFrom(
   ),
   elevation: 0,
 );
+
+final class LimitedRadiusSplashFactory extends InteractiveInkFeatureFactory {
+  const LimitedRadiusSplashFactory({this.radius = 36.0});
+
+  final double radius;
+
+  @override
+  InteractiveInkFeature create({
+    required MaterialInkController controller,
+    required RenderBox referenceBox,
+    required Offset position,
+    required Color color,
+    required TextDirection textDirection,
+    bool containedInkWell = false,
+    RectCallback? rectCallback,
+    BorderRadius? borderRadius,
+    ShapeBorder? customBorder,
+    double? radius,
+    VoidCallback? onRemoved,
+  }) {
+    return InkRipple(
+      controller: controller,
+      referenceBox: referenceBox,
+      position: position,
+      color: color,
+      containedInkWell: containedInkWell,
+      rectCallback: rectCallback,
+      borderRadius: borderRadius,
+      customBorder: customBorder,
+      radius: this.radius, // Use our custom radius
+      onRemoved: onRemoved,
+      textDirection: textDirection,
+    );
+  }
+}
