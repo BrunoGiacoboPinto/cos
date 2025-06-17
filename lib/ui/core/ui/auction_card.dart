@@ -1,7 +1,6 @@
 import 'package:cos/domain/model/car_auction.dart';
 import 'package:cos/ui/core/ui/theme/spacing.dart';
 import 'package:flutter/material.dart';
-import 'package:intersperse/intersperse.dart';
 
 final class AuctionCard extends StatelessWidget {
   const AuctionCard({
