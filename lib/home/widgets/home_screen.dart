@@ -70,12 +70,9 @@ class _HomeScreenState extends State<HomeScreen> {
           child: ListenableBuilder(
             listenable: widget.viewModel,
             builder: (context, child) {
-              final state = widget.viewModel.state;
-              print('Current state in ListenableBuilder: $state');
-
               return AnimatedSwitcher(
                 duration: const Duration(milliseconds: 300),
-                child: switch (state) {
+                child: switch (widget.viewModel.state) {
                   HomeScreenInitial() || HomeScreenVNIValid() || HomeScreenVNIError() => const SizedBox.shrink(),
                   HomeScreenLoading() => Center(child: const CircularProgressIndicator()),
                   HomeScreenError(error: final error) => Text(error.message, style: TextStyle(color: Colors.red)),
