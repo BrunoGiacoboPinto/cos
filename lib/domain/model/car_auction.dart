@@ -4,24 +4,24 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'car_auction.freezed.dart';
 
 @freezed
-abstract class CarAuction with _$CarAuction {
-  const factory CarAuction.data(CarAuctionData data) = CarAuctionWithData;
-  const factory CarAuction.choices(List<CarAuctionChoice> choices) = CarAuctionWithChoices;
-  const factory CarAuction.error(CarAuctionError error) = CarAuctionWithError;
+abstract class CarAuctionModel with _$CarAuctionModel {
+  const factory CarAuctionModel.data(CarAuctionDataModel data) = CarAuctionWithData;
+  const factory CarAuctionModel.choices(Set<CarAuctionChoiceModel> choices) = CarAuctionWithChoices;
+  const factory CarAuctionModel.error(CarAuctionErrorModel error) = CarAuctionWithError;
 
-  factory CarAuction.fromResponse(CosResponse response) {
+  factory CarAuctionModel.fromResponse(CosResponse response) {
     return switch (response) {
-      CosResponseWithData(data: final data) => CarAuction.data(CarAuctionData.from(data)),
-      CosResponseWithChoices(choices: final choices) => CarAuction.choices([...choices.map(CarAuctionChoice.from)]),
-      CosResponseWithError(error: final error) => CarAuction.error(CarAuctionError.from(error)),
+      CosResponseWithData(data: final data) => CarAuctionModel.data(CarAuctionDataModel.from(data)),
+      CosResponseWithChoices(choices: final choices) => CarAuctionModel.choices({...choices.map(CarAuctionChoiceModel.from)}),
+      CosResponseWithError(error: final error) => CarAuctionModel.error(CarAuctionErrorModel.from(error)),
       _ => throw ArgumentError('Unsupported response type'),
     };
   }
 }
 
 @freezed
-abstract class CarAuctionData with _$CarAuctionData {
-  const factory CarAuctionData({
+abstract class CarAuctionDataModel with _$CarAuctionDataModel {
+  const factory CarAuctionDataModel.data({
     required int id,
     required String make,
     required String model,
@@ -35,10 +35,12 @@ abstract class CarAuctionData with _$CarAuctionData {
     required DateTime inspectorRequestedAt,
     required String origin,
     required String estimationRequestId,
-  }) = _CarAuctionData;
+  }) = CarAuctionWithDataModel;
 
-  factory CarAuctionData.from(CosResponseData data) {
-    return CarAuctionData(
+  const factory CarAuctionDataModel.empty() = CarAuctionEmptyModel;
+
+  factory CarAuctionDataModel.from(CosResponseData data) {
+    return CarAuctionDataModel.data(
       id: data.id,
       make: data.make,
       model: data.model,
@@ -57,16 +59,16 @@ abstract class CarAuctionData with _$CarAuctionData {
 }
 
 @freezed
-abstract class CarAuctionChoice with _$CarAuctionChoice {
-  const factory CarAuctionChoice({
+abstract class CarAuctionChoiceModel with _$CarAuctionChoiceModel {
+  const factory CarAuctionChoiceModel({
     required String externalId,
     required String make,
     required String model,
     required int similarity,
-  }) = _CarAuctionChoice;
+  }) = _CarAuctionChoiceModel;
 
-  factory CarAuctionChoice.from(CosResponseChoiches choice) {
-    return CarAuctionChoice(
+  factory CarAuctionChoiceModel.from(CosResponseChoiches choice) {
+    return CarAuctionChoiceModel(
       externalId: choice.externalId,
       make: choice.make,
       model: choice.model,
@@ -76,14 +78,14 @@ abstract class CarAuctionChoice with _$CarAuctionChoice {
 }
 
 @freezed
-abstract class CarAuctionError with _$CarAuctionError {
-  const factory CarAuctionError({
+abstract class CarAuctionErrorModel with _$CarAuctionErrorModel {
+  const factory CarAuctionErrorModel({
     required String message,
     required String id,
-  }) = _CarAuctionError;
+  }) = _CarAuctionErrorModel;
 
-  factory CarAuctionError.from(CosResponseError error) {
-    return CarAuctionError(
+  factory CarAuctionErrorModel.from(CosResponseError error) {
+    return CarAuctionErrorModel(
       message: error.message,
       id: error.msgKey,
     );
