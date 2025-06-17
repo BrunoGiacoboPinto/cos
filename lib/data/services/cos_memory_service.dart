@@ -22,4 +22,7 @@ final class CosMemoryService implements CosServiceReadWriteAccess<CarAuctionMode
   Future<void> saveData({required CarAuctionModel data, required String key}) async {
     _cache[key] = data;
   }
+  
+  @override
+  Future<Map<String, CarAuctionModel>> getAllData() async => _cache;
 }
