@@ -1,6 +1,7 @@
 import 'package:cos/domain/model/car_auction.dart';
 import 'package:cos/home/view_model/home_view_model.dart';
 import 'package:cos/ui/core/ui/auction_card.dart';
+import 'package:cos/ui/core/ui/theme/colors.dart';
 import 'package:cos/ui/core/ui/theme/spacing.dart';
 import 'package:flutter/material.dart';
 
@@ -42,6 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         spacing2Xl,
         Padding(
@@ -67,21 +69,113 @@ class _HomeScreenState extends State<HomeScreen> {
             },
           ),
         ),
-        ListenableBuilder(
-          listenable: widget.viewModel,
-          builder: (context, child) {
-            return AnimatedSwitcher(
-              duration: const Duration(milliseconds: 300),
-              child: switch (widget.viewModel.state) {
-                HomeScreenInitial() || HomeScreenVNIValid() || HomeScreenVNIError() => const SizedBox.shrink(),
-                HomeScreenLoading() => Center(child: const CircularProgressIndicator()),
-                HomeScreenError(error: final error) => Text(error.message, style: TextStyle(color: Colors.red)),
-                HomeScreenCarAuctionLoaded(data: final data) => HomeScreenCarAuctionView(model: data),
-              },
-            );
-          },
+        Expanded(
+          child: ListenableBuilder(
+            listenable: widget.viewModel,
+            builder: (context, child) {
+              return AnimatedSwitcher(
+                duration: const Duration(milliseconds: 300),
+                child: switch (widget.viewModel.state) {
+                  HomeScreenInitial() || HomeScreenVNIValid() || HomeScreenVNIError() => const HomeScreenSearchView(),
+                  HomeScreenLoading() => Center(child: const CircularProgressIndicator()),
+                  HomeScreenError(error: final error) => HomeScreenErrorView(error: error.message),
+                  HomeScreenCarAuctionLoaded(data: final data) => HomeScreenCarAuctionView(model: data),
+                },
+              );
+            },
+          ),
         ),
       ],
+    );
+  }
+}
+
+@visibleForTesting
+final class HomeScreenSearchView extends StatelessWidget {
+  const HomeScreenSearchView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Image.asset(
+            'assets/images/car_search.png',
+            width: 135,
+            height: 135,
+            fit: BoxFit.cover,
+            color: lightBlue,
+          ),
+          spacingMd,
+          Text(
+            'Search for a car by VIN',
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              fontWeight: FontWeight.w500,
+              color: lightBlue,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+@visibleForTesting
+final class HomeScreenErrorView extends StatelessWidget {
+  const HomeScreenErrorView({super.key, required this.error});
+
+  final String error;
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.asset(
+            'assets/images/car_broken.png',
+            width: 135,
+            height: 135,
+            fit: BoxFit.fitWidth,
+            color: lightBlue,
+          ),
+          spacingMd,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: spaceLg),
+            child: Text(
+              'Oops! Something went wrong.',
+              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                fontWeight: FontWeight.bold,
+                color: lightBlue,
+              ),
+            ),
+          ),
+          spacingSm,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: space2Xl),
+            child: Text(
+              error,
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                fontWeight: FontWeight.w500,
+                color: lightBlue,
+              ),
+            ),
+          ),
+          spacingSm,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: space2Xl),
+            child: Text(
+              'Please try again later.',
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                fontWeight: FontWeight.w400,
+                color: lightBlue,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -114,7 +208,42 @@ final class HomeScreenCarAuctionView extends StatelessWidget {
         ),
       ),
       CarAuctionWithError(error: final error) => Center(
-        child: Text(error.message, style: TextStyle(color: Colors.red)),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(
+                'assets/images/car_broken.png',
+                width: 135,
+                height: 135,
+                fit: BoxFit.fitWidth,
+                color: lightBlue,
+              ),
+              spacingMd,
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: spaceLg),
+                child: Text(
+                  'Oops! Something went wrong.',
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: lightBlue,
+                  ),
+                ),
+              ),
+              spacingSm,
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: space2Xl),
+                child: Text(
+                  error.message,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    fontWeight: FontWeight.w500,
+                    color: lightBlue,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
       CarAuctionModel() => const SizedBox.shrink(),
     };
