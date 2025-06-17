@@ -15,7 +15,7 @@ Future<GetIt> getItInit() async {
   logger.info('Initializing GetIt dependencies');
 
   getIt.registerLazySingleton<CosService>(
-    () => CosServiceImpl(CosChallenge.httpClient),
+    () => RemoteCosServiceImpl(CosChallenge.httpClient),
   );
 
   getIt.registerLazySingleton<CosRepository>(() {

@@ -3,15 +3,14 @@ import 'dart:convert';
 import 'package:cos/config/environment.dart';
 import 'package:cos/data/api/cos_api.dart';
 import 'package:cos/data/model/cos_response.dart';
-import 'package:flutter/foundation.dart';
 import 'package:http/http.dart';
 
 abstract interface class CosService {
   Future<CosResponse> getData();
 }
 
-final class CosServiceImpl implements CosService {
-  CosServiceImpl(this._httpClient);
+final class RemoteCosServiceImpl implements CosService {
+  RemoteCosServiceImpl(this._httpClient);
 
   final BaseClient _httpClient;
 
@@ -23,8 +22,6 @@ final class CosServiceImpl implements CosService {
         CosChallenge.user: 'user',
       },
     );
-
-    debugPrint('__response = ${response.body}');
 
     return switch (response.statusCode) {
       200 => CosResponse.data(
