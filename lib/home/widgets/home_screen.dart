@@ -1,4 +1,6 @@
+import 'package:cos/domain/model/car_auction.dart';
 import 'package:cos/home/view_model/home_view_model.dart';
+import 'package:cos/ui/core/ui/theme/spacing.dart';
 import 'package:flutter/material.dart';
 
 final class HomeScreen extends StatefulWidget {
@@ -38,51 +40,90 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return ListenableBuilder(
-      listenable: widget.viewModel,
-      builder: (context, child) {
-        final state = widget.viewModel.state;
-
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: TextField(
+    return Column(
+      children: [
+        spacing2Xl,
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: ListenableBuilder(
+            listenable: widget.viewModel,
+            builder: (context, child) {
+              return TextField(
                 controller: _textController,
                 decoration: InputDecoration(
                   hintText: 'Enter the VIN of the vehicle you are looking for',
                   border: const OutlineInputBorder(),
                   suffixIcon: Icon(Icons.search),
-                  errorText: state is HomeScreenVNIError ? state.error : null,
+                  errorText: switch (widget.viewModel.state) {
+                    HomeScreenVNIError(error: final error) => error,
+                    _ => null,
+                  },
                 ),
                 keyboardType: TextInputType.text,
                 onChanged: widget.viewModel.onVniChanged,
                 maxLength: 17,
-              ),
-            ),
+              );
+            },
+          ),
+        ),
+        Expanded(
+          child: ListenableBuilder(
+            listenable: widget.viewModel,
+            builder: (context, child) {
+              final state = widget.viewModel.state;
+              print('Current state in ListenableBuilder: $state');
 
-            AnimatedSwitcher(
-              duration: const Duration(milliseconds: 300),
-              child: switch (state) {
-                HomeScreenInitial() => const SizedBox.shrink(),
-                HomeScreenVNIValid() => const Text('VIN is valid!'),
-                HomeScreenVNIError(error: final error) => Text('Error: $error'),
-                HomeScreenCarAuctionLoaded(data: final data, choices: final choices) => Column(
-                  children: [
-                    Text('Car Auction Data: ${data.make} ${data.model}'),
-                    ...choices.map((choice) => Text('Choice: ${choice.make} ${choice.model}')),
-                  ],
-                ),
-                HomeScreenError(error: final error) => Text('Error: $error'),
-                HomeScreenLoading() => Center(
-                  child: CircularProgressIndicator(),
-                ),
-              },
-            ),
-          ],
-        );
-      },
+              return AnimatedSwitcher(
+                duration: const Duration(milliseconds: 300),
+                child: switch (state) {
+                  HomeScreenInitial() || HomeScreenVNIValid() || HomeScreenVNIError() => const SizedBox.shrink(),
+                  HomeScreenLoading() => Center(child: const CircularProgressIndicator()),
+                  HomeScreenError(error: final error) => Text(error.message, style: TextStyle(color: Colors.red)),
+                  HomeScreenCarAuctionLoaded(data: final data) => HomeScreenCarAuctionView(model: data),
+                },
+              );
+            },
+          ),
+        ),
+      ],
     );
+  }
+}
+
+@visibleForTesting
+final class HomeScreenCarAuctionView extends StatelessWidget {
+  const HomeScreenCarAuctionView({
+    super.key,
+    required this.model,
+  });
+
+  final CarAuctionModel model;
+
+  @override
+  Widget build(BuildContext context) {
+    return switch (model) {
+      CarAuctionWithData(data: final CarAuctionWithDataModel data) => Text(
+        'CarAuctionWithDataModel: ${data.make} ${data.model} - \$${data.price}',
+        style: TextStyle(color: Colors.red),
+      ),
+      CarAuctionWithChoices(choices: final choices) => Center(
+        child: ListView.builder(
+          itemCount: choices.length, // No choices available
+          itemBuilder: (context, index) {
+            final choice = choices.elementAt(index);
+            return ListTile(
+              title: Text(
+                '${choice.make} ${choice.model}',
+                style: TextStyle(color: Colors.red),
+              ),
+            );
+          },
+        ),
+      ),
+      CarAuctionWithError(error: final error) => Center(
+        child: Text(error.message, style: TextStyle(color: Colors.red)),
+      ),
+      CarAuctionModel() => throw UnimplementedError(),
+    };
   }
 }
