@@ -38,7 +38,7 @@ GoRouter buildAppRouter(GetIt dependencies) {
                   ),
                   BottomNavigationBarItem(
                     icon: Icon(Icons.gavel),
-                    label: 'Auction',
+                    label: 'Auctions',
                   ),
                 ],
                 currentIndex: AppRoutes.values.indexWhere(
