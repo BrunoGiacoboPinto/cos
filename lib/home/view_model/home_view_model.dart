@@ -115,7 +115,7 @@ class HomeViewModel extends ChangeNotifier {
       _logger.severe('Error fetching car auction data', error, Chain.forTrace(stackTrace));
       _state = HomeScreenError(
         CarAuctionErrorModel(
-          message: 'Fail to fetch car auction data with error: $error',
+          message: error.toString(),
           id: 'fetch_error',
         ),
       );
