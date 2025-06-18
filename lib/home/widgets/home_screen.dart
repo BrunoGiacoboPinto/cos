@@ -58,7 +58,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 decoration: InputDecoration(
                   hintText: 'Enter the VIN of the vehicle you are looking for',
                   border: const OutlineInputBorder(),
-                  suffixIcon: Icon(Icons.search),
+                  suffixIcon: Icon(Icons.search, color: orange),
+                  errorStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: orange,
+                    fontWeight: FontWeight.w500,
+                    height: 1.4,
+                  ),
                   errorText: switch (widget.viewModel.state) {
                     HomeScreenVNIError(error: final error) => error,
                     _ => null,
@@ -104,7 +109,9 @@ final class HomeScreenInitialView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return initialData.isEmpty ? const HomeScreenSearchView() : VehicleAuctionList(models: initialData);
+    return initialData.isEmpty //
+        ? const HomeScreenSearchView()
+        : VehicleAuctionList(models: initialData);
   }
 }
 
@@ -151,6 +158,7 @@ final class HomeScreenErrorView extends StatelessWidget {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Image.asset(
             'assets/images/car_broken.png',
