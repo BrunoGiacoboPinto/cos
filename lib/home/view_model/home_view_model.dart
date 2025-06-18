@@ -117,6 +117,8 @@ class HomeViewModel extends ChangeNotifier {
               ),
             ),
           );
+        } else {
+          _state = HomeScreenCarAuctionLoaded(data);
         }
       } else {
         _logger.info('Received (${data.runtimeType}): $data');
