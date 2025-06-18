@@ -40,12 +40,15 @@ final class VehicleAuctionScreen extends StatelessWidget {
                   child: switch (viewModel.state) {
                     VehicleAuctionScreenStateInitial() => const Center(child: Text('No Vehicle Auction has been made yet')),
                     VehicleAuctionScreenStateLoading() => const Center(child: CircularProgressIndicator()),
-                    VehicleAuctionScreenStateLoaded(data: final data) => VehicleAuctionList(models: data),
+                    VehicleAuctionScreenStateLoaded(data: final data) =>
+                      data.isEmpty //
+                          ? const Center(child: Text('No Vehicle Auction has been made yet'))
+                          : VehicleAuctionList(models: data),
                     VehicleAuctionScreenStateError(error: final error) => Center(child: Text('Error: $error')),
                   },
                 ),
               );
-            }, 
+            },
           ),
         ),
       ],
