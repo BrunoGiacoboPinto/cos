@@ -22,29 +22,26 @@ class VehicleAuctionScreenStateError extends VehicleAuctionScreenState {
 }
 
 class VehicleAuctionViewModel extends ChangeNotifier {
-  VehicleAuctionViewModel({required CosRepository repository}) : _repository = repository {
-    _state = VehicleAuctionScreenStateLoading();
-    notifyListeners();
-    _repository
-        .getAllCarAuctions()
-        .then(
-          (data) {
-            _state = VehicleAuctionScreenStateLoaded(data);
-            notifyListeners();
-          },
-        )
-        .catchError(
-          (error, stackTrace) {
-            _logger.severe('Error fetching car auctions', error, stackTrace);
-            _state = VehicleAuctionScreenStateError(error.toString());
-            notifyListeners();
-          },
-        );
-  }
+  VehicleAuctionViewModel({required CosRepository repository}) : _repository = repository;
 
   static final _logger = Logger('VehicleAuctionViewModel');
   final CosRepository _repository;
 
   VehicleAuctionScreenState _state = VehicleAuctionScreenStateInitial();
   VehicleAuctionScreenState get state => _state;
+
+  Future<void> loadVehicleAuctionData() async {
+    _state = VehicleAuctionScreenStateLoading();
+    notifyListeners();
+
+    try {
+      final data = await _repository.getAllCarAuctions();
+      _state = VehicleAuctionScreenStateLoaded(data);
+    } catch (error, stackTrace) {
+      _logger.severe('Error refreshing car auctions', error, stackTrace);
+      _state = VehicleAuctionScreenStateError(error.toString());
+    }
+
+    notifyListeners();
+  }
 }
