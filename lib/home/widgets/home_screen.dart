@@ -1,6 +1,7 @@
 import 'package:cos/domain/model/car_auction.dart';
 import 'package:cos/home/view_model/home_view_model.dart';
 import 'package:cos/ui/core/ui/auction_card.dart';
+import 'package:cos/ui/core/ui/vehicle_auction_list.dart';
 import 'package:cos/ui/core/ui/theme/colors.dart';
 import 'package:cos/ui/core/ui/theme/spacing.dart';
 import 'package:flutter/material.dart';
@@ -104,19 +105,7 @@ final class HomeScreenInitialView extends StatelessWidget {
   Widget build(BuildContext context) {
     return initialData.isEmpty
         ? const HomeScreenSearchView()
-        : ListView.builder(
-            padding: const EdgeInsets.all(spaceSm),
-            itemCount: initialData.length,
-            itemBuilder: (context, index) {
-              final key = initialData.keys.elementAt(index);
-              final model = initialData[key];
-              if (model case CarAuctionWithData(data: final CarAuctionWithDataModel data)) {
-                return AuctionCard(model: data);
-              } else {
-                return const SizedBox.shrink();
-              }
-            },
-          );
+        : VehicleAuctionList(models: initialData);
   }
 }
 
