@@ -40,7 +40,9 @@ Future<GetIt> getItInit() async {
     ),
   );
 
-  getIt.registerLazySingleton<VehicleAuctionViewModel>(() => VehicleAuctionViewModel());
+  getIt.registerLazySingleton<VehicleAuctionViewModel>(
+    () => VehicleAuctionViewModel(repository: getIt<CosRepository>()),
+  );
 
   await getIt.allReady();
 
