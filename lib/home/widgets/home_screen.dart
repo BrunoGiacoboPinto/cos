@@ -4,6 +4,7 @@ import 'package:cos/ui/core/ui/auction_card.dart';
 import 'package:cos/ui/core/ui/vehicle_auction_list.dart';
 import 'package:cos/ui/core/ui/theme/colors.dart';
 import 'package:cos/ui/core/ui/theme/spacing.dart';
+import 'package:cos/ui/core/ui/vehicle_similarity_list.dart';
 import 'package:flutter/material.dart';
 
 final class HomeScreen extends StatefulWidget {
@@ -103,9 +104,7 @@ final class HomeScreenInitialView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return initialData.isEmpty
-        ? const HomeScreenSearchView()
-        : VehicleAuctionList(models: initialData);
+    return initialData.isEmpty ? const HomeScreenSearchView() : VehicleAuctionList(models: initialData);
   }
 }
 
@@ -212,56 +211,40 @@ final class HomeScreenCarAuctionView extends StatelessWidget {
   Widget build(BuildContext context) {
     return switch (model) {
       CarAuctionWithData(data: final CarAuctionWithDataModel data) => AuctionCard(model: data),
-      CarAuctionWithChoices(choices: final choices) => Center(
-        child: ListView.builder(
-          itemCount: choices.length, // No choices available
-          itemBuilder: (context, index) {
-            final choice = choices.elementAt(index);
-            return ListTile(
-              title: Text(
-                '${choice.make} ${choice.model}',
-                style: TextStyle(color: Colors.red),
-              ),
-            );
-          },
-        ),
-      ),
+      CarAuctionWithChoices(choices: final choices) => VehicleSimilarityList(choices: choices),
       CarAuctionWithError(error: final error) => Center(
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset(
-                'assets/images/car_broken.png',
-                width: 135,
-                height: 135,
-                fit: BoxFit.fitWidth,
-                color: lightBlue,
-              ),
-              spacingMd,
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: spaceLg),
-                child: Text(
-                  'Oops! Something went wrong.',
-                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: lightBlue,
-                  ),
+        child: Column(
+          children: [
+            Image.asset(
+              'assets/images/car_broken.png',
+              width: 135,
+              height: 135,
+              fit: BoxFit.fitWidth,
+              color: lightBlue,
+            ),
+            spacingMd,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: spaceLg),
+              child: Text(
+                'Oops! Something went wrong.',
+                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: lightBlue,
                 ),
               ),
-              spacingSm,
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: space2Xl),
-                child: Text(
-                  error.message,
-                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    fontWeight: FontWeight.w500,
-                    color: lightBlue,
-                  ),
+            ),
+            spacingSm,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: space2Xl),
+              child: Text(
+                error.message,
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                  fontWeight: FontWeight.w500,
+                  color: lightBlue,
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
       CarAuctionModel() => const SizedBox.shrink(),
