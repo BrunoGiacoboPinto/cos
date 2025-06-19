@@ -1,4 +1,5 @@
 import 'package:collection/collection.dart';
+import 'package:cos/data/repositories/login/login_repository.dart';
 import 'package:cos/domain/model/car_auction.dart';
 import 'package:cos/home/widgets/home_screen.dart';
 import 'package:cos/home/widgets/home_screen_appbar.dart';
@@ -17,7 +18,7 @@ enum AppRoutes {
   home('/home'),
   auction('/auction'),
   details('/details'),
-  login('/login');
+  login('/');
 
   const AppRoutes(this.path);
   final String path;
@@ -40,106 +41,124 @@ enum AppRoutes {
 GoRouter buildAppRouter(GetIt dependencies) {
   return GoRouter(
     initialLocation: AppRoutes.login.path,
+    redirect: (context, state) async {
+      if (state.uri.path == AppRoutes.login.path) {
+        final loginRepository = dependencies.get<LoginRepository>();
+        if (await loginRepository.hasLoggedInAtLeastOnce()) {
+          return AppRoutes.home.path;
+        } else {
+          return AppRoutes.login.path;
+        }
+      } else {
+        return null;
+      }
+    },
     routes: [
-      ShellRoute(
-        builder: (context, state, child) {
-          final preferredSize = AppRoutes.auction.path == state.uri.path ? const Size.fromHeight(64.0) : const Size.fromHeight(96.0);
-          return Scaffold(
-            appBar: AppRoutes.details.path == state.uri.path
-                ? null
-                : PreferredSize(
-                    preferredSize: preferredSize,
-                    child: Container(
-                      alignment: Alignment.bottomCenter,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: spaceMd,
-                        vertical: spaceSm,
-                      ),
-                      child: switch (AppRoutes.fromPath(state.uri.path)) {
-                        AppRoutes.home => HomeScreenAppbar(viewModel: dependencies.get()),
-                        AppRoutes.auction => Text(
-                          'Last Auctions',
-                          style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-                            color: lightBlue,
-                          ),
-                        ),
-                        _ => const SizedBox.shrink(),
-                      },
-                    ),
-                  ),
-            backgroundColor: Theme.of(context).colorScheme.onSurface,
-            body: SafeArea(child: child),
-            bottomNavigationBar: Theme(
-              data: Theme.of(context).copyWith(
-                splashFactory: const LimitedRadiusSplashFactory(),
-              ),
-              child: BottomNavigationBar(
-                elevation: 0,
-                backgroundColor: darkGray,
-                items: const [
-                  // TODO(bpinto): Use l10n for labels
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.home),
-                    label: 'Home',
-                  ),
-                  BottomNavigationBarItem(
-                    icon: Icon(Icons.gavel),
-                    label: 'Auctions',
-                  ),
-                ],
-                currentIndex: AppRoutes.bottomNavigationIndexFor(state.uri.path),
-                onTap: (index) {
-                  context.go(AppRoutes.values[index % AppRoutes.values.length].path);
-                },
-              ),
-            ),
-          );
-        },
-        routes: [
-          GoRoute(
-            path: AppRoutes.home.path,
-            pageBuilder: (context, state) {
-              return PageViewTransitionPage(
-                child: HomeScreen(viewModel: dependencies.get()),
-                pageKey: state.pageKey,
-                pageIndex: AppRoutes.home.index,
-              );
-            },
-          ),
-          GoRoute(
-            path: AppRoutes.auction.path,
-            pageBuilder: (context, state) {
-              return PageViewTransitionPage(
-                child: VehicleAuctionScreen(viewModel: dependencies.get()),
-                pageKey: state.pageKey,
-                pageIndex: AppRoutes.auction.index,
-              );
-            },
-          ),
-        ],
-      ),
       GoRoute(
-        path: AppRoutes.details.path,
-        pageBuilder: (context, state) {
-          final Widget child;
-          if (state.extra case final CarAuctionWithDataModel model?) {
-            child = VehicleAuctionDetail(model: model);
-          } else {
-            child = const Center(
-              child: Text('Fail to get details for the vehicle auction.'),
-            );
-          }
-
-          return MaterialPage(child: child);
-        },
-      ),
-      GoRoute(
+        name: AppRoutes.login.name,
         path: AppRoutes.login.path,
         pageBuilder: (context, state) {
           return MaterialPage(
             child: LoginScreen(viewModel: dependencies.get()),
           );
         },
+        routes: [
+          ShellRoute(
+            builder: (context, state, child) {
+              final preferredSize = AppRoutes.auction.path == state.uri.path ? const Size.fromHeight(64.0) : const Size.fromHeight(96.0);
+              return Scaffold(
+                appBar: AppRoutes.details.path == state.uri.path
+                    ? null
+                    : PreferredSize(
+                        preferredSize: preferredSize,
+                        child: Container(
+                          alignment: Alignment.bottomCenter,
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: spaceMd,
+                            vertical: spaceSm,
+                          ),
+                          child: switch (AppRoutes.fromPath(state.uri.path)) {
+                            AppRoutes.home => HomeScreenAppbar(viewModel: dependencies.get()),
+                            AppRoutes.auction => Text(
+                              'Last Auctions',
+                              style: Theme.of(context).textTheme.headlineLarge?.copyWith(
+                                color: lightBlue,
+                              ),
+                            ),
+                            _ => const SizedBox.shrink(),
+                          },
+                        ),
+                      ),
+                backgroundColor: Theme.of(context).colorScheme.onSurface,
+                body: SafeArea(child: child),
+                bottomNavigationBar: Theme(
+                  data: Theme.of(context).copyWith(
+                    splashFactory: const LimitedRadiusSplashFactory(),
+                  ),
+                  child: BottomNavigationBar(
+                    elevation: 0,
+                    backgroundColor: darkGray,
+                    items: const [
+                      // TODO(bpinto): Use l10n for labels
+                      BottomNavigationBarItem(
+                        icon: Icon(Icons.home),
+                        label: 'Home',
+                      ),
+                      BottomNavigationBarItem(
+                        icon: Icon(Icons.gavel),
+                        label: 'Auctions',
+                      ),
+                    ],
+                    currentIndex: AppRoutes.bottomNavigationIndexFor(state.uri.path),
+                    onTap: (index) {
+                      context.go(AppRoutes.values[index % AppRoutes.values.length].path);
+                    },
+                  ),
+                ),
+              );
+            },
+            routes: [
+              GoRoute(
+                name: AppRoutes.home.name,
+                path: AppRoutes.home.path,
+                pageBuilder: (context, state) {
+                  return PageViewTransitionPage(
+                    child: HomeScreen(viewModel: dependencies.get()),
+                    pageKey: state.pageKey,
+                    pageIndex: AppRoutes.home.index,
+                  );
+                },
+              ),
+              GoRoute(
+                name: AppRoutes.auction.name,
+                path: AppRoutes.auction.path,
+                pageBuilder: (context, state) {
+                  return PageViewTransitionPage(
+                    child: VehicleAuctionScreen(viewModel: dependencies.get()),
+                    pageKey: state.pageKey,
+                    pageIndex: AppRoutes.auction.index,
+                  );
+                },
+              ),
+            ],
+          ),
+          GoRoute(
+            name: AppRoutes.details.name,
+            path: AppRoutes.details.path,
+            pageBuilder: (context, state) {
+              final Widget child;
+              if (state.extra case final CarAuctionWithDataModel model?) {
+                child = VehicleAuctionDetail(model: model);
+              } else {
+                child = const Center(
+                  child: Text('Fail to get details for the vehicle auction.'),
+                );
+              }
+
+              return MaterialPage(child: child);
+            },
+          ),
+        ],
       ),
     ],
   );
