@@ -1,7 +1,10 @@
 import 'package:cos/domain/model/car_auction.dart';
 import 'package:cos/ui/core/ui/theme/colors.dart';
 import 'package:cos/ui/core/ui/theme/spacing.dart';
+import 'package:cos/ui/core/widgets/vehicle_detail_item.dart';
 import 'package:flutter/material.dart';
+import 'package:intersperse/intersperse.dart';
+import 'package:intl/intl.dart';
 
 final class VehicleAuctionDetail extends StatelessWidget {
   const VehicleAuctionDetail({
@@ -10,6 +13,7 @@ final class VehicleAuctionDetail extends StatelessWidget {
   });
 
   final CarAuctionWithDataModel model;
+  static final _dateFormat = DateFormat.yMd('en_US');
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +30,12 @@ final class VehicleAuctionDetail extends StatelessWidget {
             color: lightBlue,
           ),
         ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.share),
+            onPressed: () {},
+          ),
+        ],
       ),
       body: SafeArea(
         child: Column(
@@ -48,23 +58,52 @@ final class VehicleAuctionDetail extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        'Market price:',
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      Text(
-                        '\$${model.price.toStringAsFixed(2)}',
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          fontWeight: FontWeight.w500,
-                        ),
+                      ...intersperse(
+                        spacingSm,
+                        [
+                          VehicleDetailItem(
+                            title: 'Identifier',
+                            subtitle: model.externalId,
+                          ),
+                          VehicleDetailItem(
+                            title: 'Market price',
+                            subtitle: '\$${model.price.toStringAsFixed(2)}',
+                          ),
+                          VehicleDetailItem(
+                            title: 'Customer experience',
+                            subtitle: model.positiveCustomerFeedback ? 'Positive' : 'Negative',
+                          ),
+                          VehicleDetailItem(
+                            title: 'Origin',
+                            subtitle: model.origin,
+                          ),
+                          VehicleDetailItem(
+                            title: 'Inspection date',
+                            subtitle: _dateFormat.format(model.inspectorRequestedAt),
+                          ),
+                        ],
                       ),
                     ],
                   ),
                 ),
               ),
-            )
+            ),
+            const Spacer(),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: spaceMd),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Theme.of(context).colorScheme.secondary,
+                  foregroundColor: lightBlue,
+                  minimumSize: const Size.fromHeight(50),
+                ),
+                onPressed: () {},
+                child: const Text('Place bid'),
+              ),
+            ),
+            SizedBox(
+              height: MediaQuery.viewInsetsOf(context).bottom + spaceMd,
+            ),
           ],
         ),
       ),
