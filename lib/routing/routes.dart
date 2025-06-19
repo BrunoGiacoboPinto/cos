@@ -2,6 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:cos/domain/model/car_auction.dart';
 import 'package:cos/home/widgets/home_screen.dart';
 import 'package:cos/home/widgets/home_screen_appbar.dart';
+import 'package:cos/login/widgets/login_screen.dart';
 import 'package:cos/routing/transitions.dart';
 import 'package:cos/ui/core/ui/theme/button.dart';
 import 'package:cos/ui/core/ui/theme/colors.dart';
@@ -15,13 +16,14 @@ import 'package:go_router/go_router.dart';
 enum AppRoutes {
   home('/home'),
   auction('/auction'),
-  details('/details');
+  details('/details'),
+  login('/login');
 
   const AppRoutes(this.path);
   final String path;
 
   static int bottomNavigationIndexFor(String path) {
-    if (path == details.path) {
+    if (path == details.path || path == login.path) {
       return 0;
     } else {
       return values.indexWhere(
@@ -37,13 +39,11 @@ enum AppRoutes {
 
 GoRouter buildAppRouter(GetIt dependencies) {
   return GoRouter(
-    initialLocation: AppRoutes.home.path,
+    initialLocation: AppRoutes.login.path,
     routes: [
       ShellRoute(
         builder: (context, state, child) {
-          final preferredSize = AppRoutes.auction.path == state.uri.path
-              ? const Size.fromHeight(64.0)
-              : const Size.fromHeight(96.0);
+          final preferredSize = AppRoutes.auction.path == state.uri.path ? const Size.fromHeight(64.0) : const Size.fromHeight(96.0);
           return Scaffold(
             appBar: AppRoutes.details.path == state.uri.path
                 ? null
@@ -131,6 +131,14 @@ GoRouter buildAppRouter(GetIt dependencies) {
           }
 
           return MaterialPage(child: child);
+        },
+      ),
+      GoRoute(
+        path: AppRoutes.login.path,
+        pageBuilder: (context, state) {
+          return MaterialPage(
+            child: LoginScreen(viewModel: dependencies.get()),
+          );
         },
       ),
     ],
