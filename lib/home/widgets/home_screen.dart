@@ -21,19 +21,30 @@ final class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   late final TextEditingController _textController;
+  late final FocusNode _focusNode;
 
   @override
   void initState() {
     super.initState();
+    _focusNode = FocusNode();
     _textController = TextEditingController();
     widget.viewModel.addListener(_onValidVNI);
+    _textController.addListener(_onFocusChange);
   }
 
   @override
   void dispose() {
+    _focusNode.dispose();
+    _textController.removeListener(_onFocusChange);
     _textController.dispose();
     widget.viewModel.removeListener(_onValidVNI);
     super.dispose();
+  }
+
+  void _onFocusChange() {
+    if (_focusNode.hasFocus && _textController.text.isEmpty) {
+      _focusNode.unfocus();
+    }
   }
 
   void _onValidVNI() {
@@ -54,6 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
             listenable: widget.viewModel,
             builder: (context, child) {
               return TextField(
+                focusNode: _focusNode,
                 controller: _textController,
                 decoration: InputDecoration(
                   hintText: 'Enter the VIN of the vehicle you are looking for',
@@ -72,6 +84,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 keyboardType: TextInputType.text,
                 onChanged: widget.viewModel.onVniChanged,
                 maxLength: 17,
+                onTapOutside: (event) => _focusNode.unfocus(),
+                onTapUpOutside: (event) => _focusNode.unfocus(),
               );
             },
           ),
