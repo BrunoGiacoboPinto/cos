@@ -7,7 +7,7 @@ import 'package:cos/ui/core/ui/theme/spacing.dart';
 import 'package:cos/ui/core/widgets/vehicle_similarity_list.dart';
 import 'package:flutter/material.dart';
 
-final class HomeScreen extends StatefulWidget {
+final class HomeScreen extends StatelessWidget {
   const HomeScreen({
     super.key,
     required this.viewModel,
@@ -16,98 +16,21 @@ final class HomeScreen extends StatefulWidget {
   final HomeViewModel viewModel;
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  late final TextEditingController _textController;
-  late final FocusNode _focusNode;
-
-  @override
-  void initState() {
-    super.initState();
-    _focusNode = FocusNode();
-    _textController = TextEditingController();
-    widget.viewModel.addListener(_onValidVNI);
-    _textController.addListener(_onFocusChange);
-  }
-
-  @override
-  void dispose() {
-    _focusNode.dispose();
-    _textController.removeListener(_onFocusChange);
-    _textController.dispose();
-    widget.viewModel.removeListener(_onValidVNI);
-    super.dispose();
-  }
-
-  void _onFocusChange() {
-    if (_focusNode.hasFocus && _textController.text.isEmpty) {
-      _focusNode.unfocus();
-    }
-  }
-
-  void _onValidVNI() {
-    if (widget.viewModel.state is HomeScreenVNIValid || widget.viewModel.state is HomeScreenInitial) {
-      _textController.clear();
-    }
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        spacing2Xl,
-        Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: ListenableBuilder(
-            listenable: widget.viewModel,
-            builder: (context, child) {
-              return TextField(
-                focusNode: _focusNode,
-                controller: _textController,
-                decoration: InputDecoration(
-                  hintText: 'Enter the VIN of the vehicle you are looking for',
-                  border: const OutlineInputBorder(),
-                  suffixIcon: Icon(Icons.search, color: orange),
-                  errorStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: orange,
-                    fontWeight: FontWeight.w500,
-                    height: 1.4,
-                  ),
-                  errorText: switch (widget.viewModel.state) {
-                    HomeScreenVNIError(error: final error) => error,
-                    _ => null,
-                  },
-                ),
-                keyboardType: TextInputType.text,
-                onChanged: widget.viewModel.onVniChanged,
-                maxLength: 17,
-                onTapOutside: (event) => _focusNode.unfocus(),
-                onTapUpOutside: (event) => _focusNode.unfocus(),
-              );
-            },
-          ),
-        ),
-        Expanded(
-          child: ListenableBuilder(
-            listenable: widget.viewModel,
-            builder: (context, child) {
-              return AnimatedSwitcher(
-                duration: const Duration(milliseconds: 300),
-                child: switch (widget.viewModel.state) {
-                  HomeScreenVNIValid() || HomeScreenVNIError() => const HomeScreenSearchView(),
-                  HomeScreenInitial(data: final data) => HomeScreenInitialView(initialData: data),
-                  HomeScreenLoading() => Center(child: const CircularProgressIndicator()),
-                  HomeScreenError(error: final error) => HomeScreenErrorView(error: error.message),
-                  HomeScreenCarAuctionLoaded(data: final data) => HomeScreenCarAuctionView(model: data),
-                },
-              );
-            },
-          ),
-        ),
-      ],
+    return ListenableBuilder(
+      listenable: viewModel,
+      builder: (context, child) {
+        return AnimatedSwitcher(
+          duration: const Duration(milliseconds: 300),
+          child: switch (viewModel.state) {
+            HomeScreenVNIValid() || HomeScreenVNIError() => const HomeScreenSearchView(),
+            HomeScreenInitial(data: final data) => HomeScreenInitialView(initialData: data),
+            HomeScreenLoading() => Center(child: const CircularProgressIndicator()),
+            HomeScreenError(error: final error) => HomeScreenErrorView(error: error.message),
+            HomeScreenCarAuctionLoaded(data: final data) => HomeScreenCarAuctionView(model: data),
+          },
+        );
+      },
     );
   }
 }
