@@ -62,22 +62,7 @@ class HomeViewModel extends ChangeNotifier {
     required CosRepository repository,
   }) : _vniValidationUseCase = vniValidationUseCase,
        _cosRepository = repository {
-    repository
-        .getAllCarAuctions()
-        .then((data) {
-          _state = HomeScreenInitial(data);
-          notifyListeners();
-        })
-        .catchError((error, stackTrace) {
-          _logger.severe('Error fetching initial car auctions', error, Chain.forTrace(stackTrace));
-          _state = HomeScreenError(
-            CarAuctionErrorModel(
-              message: error.toString(),
-              id: 'initial_fetch_error',
-            ),
-          );
-          notifyListeners();
-        });
+    _fetchInitialData();
   }
 
   static final _logger = Logger('HomeViewModel');
@@ -88,6 +73,11 @@ class HomeViewModel extends ChangeNotifier {
   HomeScreenState get state => _state;
 
   void onVniChanged(String value) {
+    if (value.isEmpty) {
+      _fetchInitialData();
+      return;
+    }
+
     final validation = _vniValidationUseCase(value);
 
     if (validation != null) {
@@ -95,6 +85,26 @@ class HomeViewModel extends ChangeNotifier {
     } else {
       _state = HomeScreenVNIValid();
       _fetchCarAuctionData(value);
+    }
+
+    notifyListeners();
+  }
+
+  Future<void> _fetchInitialData() async {
+    _state = const HomeScreenLoading();
+    notifyListeners();
+
+    try {
+      final data = await _cosRepository.getAllCarAuctions();
+      _state = HomeScreenInitial(data);
+    } catch (error, stackTrace) {
+      _logger.severe('Error fetching initial car auctions', error, Chain.forTrace(stackTrace));
+      _state = HomeScreenError(
+        CarAuctionErrorModel(
+          message: error.toString(),
+          id: 'initial_fetch_error',
+        ),
+      );
     }
 
     notifyListeners();
