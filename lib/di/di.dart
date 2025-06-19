@@ -1,9 +1,10 @@
 import 'package:cos/data/api/cos_api.dart';
-import 'package:cos/data/services/cos/cos_data_access_interface.dart';
+import 'package:cos/data/repositories/login/login_repository.dart';
 import 'package:cos/data/repositories/cos/cos_repository.dart';
 import 'package:cos/data/services/cos/cos_memory_service.dart';
 import 'package:cos/data/services/cos/cos_remote_service.dart';
 import 'package:cos/data/services/cos/cos_storage_service.dart';
+import 'package:cos/data/services/login/login_service.dart';
 import 'package:cos/home/view_model/home_view_model.dart';
 import 'package:cos/home/view_model/vni_use_case.dart';
 import 'package:cos/login/view_model/login_view_model.dart';
@@ -33,6 +34,11 @@ Future<GetIt> getItInit() async {
     );
   });
 
+  getIt.registerLazySingleton<LoginService>(() => LoginService());
+  getIt.registerLazySingleton<LoginRepository>(
+    () => LoginRepository(loginService: getIt<LoginService>()),
+  );
+
   getIt.registerLazySingleton<VNIValidationUseCase>(() => VNIValidationUseCase());
   getIt.registerLazySingleton<HomeViewModel>(
     () => HomeViewModel(
@@ -45,7 +51,9 @@ Future<GetIt> getItInit() async {
     () => VehicleAuctionViewModel(repository: getIt<CosRepository>()),
   );
 
-  getIt.registerLazySingleton<LoginViewModel>(() => LoginViewModel());
+  getIt.registerLazySingleton<LoginViewModel>(
+    () => LoginViewModel(loginRepository: getIt<LoginRepository>()),
+  );
 
   await getIt.allReady();
 
@@ -56,10 +64,4 @@ Future<GetIt> getItInit() async {
 void disposetGetIt() {
   final getIt = GetIt.instance;
   getIt.reset();
-  getIt.unregister<CosServiceAccess>();
-  getIt.unregister<CosRepository>();
-  getIt.unregister<VNIValidationUseCase>();
-  getIt.unregister<HomeViewModel>();
-  getIt.unregister<VehicleAuctionViewModel>();
-  getIt.unregister<LoginViewModel>();
 }
