@@ -1,5 +1,4 @@
 import 'package:cos/ui/core/ui/theme/colors.dart';
-import 'package:cos/ui/core/ui/theme/spacing.dart';
 import 'package:cos/ui/core/widgets/vehicle_auction_list.dart';
 import 'package:cos/vehicle_auction/view_model/vehicle_auction_view_model.dart';
 import 'package:flutter/material.dart';
@@ -34,44 +33,27 @@ class _VehicleAuctionScreenState extends State<VehicleAuctionScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        spacing3Xl,
-        Center(
-          child: Text(
-            'Last vehicles auctioned',
-            style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-              fontWeight: FontWeight.bold,
-              color: lightBlue,
-            ),
+    return ListenableBuilder(
+      listenable: widget.viewModel,
+      builder: (context, child) {
+        return DefaultTextStyle(
+          style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+            color: lightBlue,
           ),
-        ),
-        spacingSm,
-        Expanded(
-          child: ListenableBuilder(
-            listenable: widget.viewModel,
-            builder: (context, child) {
-              return DefaultTextStyle(
-                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                  color: lightBlue,
-                ),
-                child: AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 300),
-                  child: switch (widget.viewModel.state) {
-                    VehicleAuctionScreenStateInitial() => const Center(child: Text('No Vehicle Auction has been made yet')),
-                    VehicleAuctionScreenStateLoading() => const Center(child: CircularProgressIndicator()),
-                    VehicleAuctionScreenStateLoaded(data: final data) =>
-                      data.isEmpty //
-                          ? const Center(child: Text('No Vehicle Auction has been made yet'))
-                          : VehicleAuctionList(models: data),
-                    VehicleAuctionScreenStateError(error: final error) => Center(child: Text('Error: $error')),
-                  },
-                ),
-              );
+          child: AnimatedSwitcher(
+            duration: const Duration(milliseconds: 300),
+            child: switch (widget.viewModel.state) {
+              VehicleAuctionScreenStateInitial() => const Center(child: Text('No Vehicle Auction has been made yet')),
+              VehicleAuctionScreenStateLoading() => const Center(child: CircularProgressIndicator()),
+              VehicleAuctionScreenStateLoaded(data: final data) =>
+                data.isEmpty //
+                    ? const Center(child: Text('No Vehicle Auction has been made yet'))
+                    : VehicleAuctionList(models: data),
+              VehicleAuctionScreenStateError(error: final error) => Center(child: Text('Error: $error')),
             },
           ),
-        ),
-      ],
+        );
+      },
     );
   }
 }
