@@ -1,9 +1,11 @@
 import 'package:cos/domain/model/car_auction.dart';
+import 'package:cos/routing/routes.dart';
 import 'package:cos/ui/core/ui/theme/spacing.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
-final class AuctionCard extends StatelessWidget {
-  const AuctionCard({
+final class VehicleAuctionCard extends StatelessWidget {
+  const VehicleAuctionCard({
     super.key,
     required this.model,
   });
@@ -30,9 +32,12 @@ final class AuctionCard extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  Image.asset(
-                    'assets/images/toyota_gt_86.png',
-                    fit: BoxFit.cover,
+                  Hero(
+                    tag: 'vehidle_auction_image_${model.id}',
+                    child: Image.asset(
+                      'assets/images/toyota_gt_86.png',
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ],
               ),
@@ -77,7 +82,7 @@ final class AuctionCard extends StatelessWidget {
                         backgroundColor: Theme.of(context).colorScheme.secondary,
                       ),
                       onPressed: () {
-                        // Handle button press
+                        context.push(AppRoutes.details.path, extra: model);
                       },
                       child: Icon(Icons.arrow_forward),
                     ),
