@@ -1,10 +1,10 @@
 import 'package:cos/domain/model/car_auction.dart';
 import 'package:cos/home/view_model/home_view_model.dart';
-import 'package:cos/ui/core/ui/vechicle_auction_card.dart';
-import 'package:cos/ui/core/ui/vehicle_auction_list.dart';
+import 'package:cos/ui/core/widgets/vechicle_auction_card.dart';
+import 'package:cos/ui/core/widgets/vehicle_auction_list.dart';
 import 'package:cos/ui/core/ui/theme/colors.dart';
 import 'package:cos/ui/core/ui/theme/spacing.dart';
-import 'package:cos/ui/core/ui/vehicle_similarity_list.dart';
+import 'package:cos/ui/core/widgets/vehicle_similarity_list.dart';
 import 'package:flutter/material.dart';
 
 final class HomeScreen extends StatefulWidget {

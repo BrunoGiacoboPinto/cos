@@ -1,6 +1,6 @@
 import 'package:cos/ui/core/ui/theme/colors.dart';
 import 'package:cos/ui/core/ui/theme/spacing.dart';
-import 'package:cos/ui/core/ui/vehicle_auction_list.dart';
+import 'package:cos/ui/core/widgets/vehicle_auction_list.dart';
 import 'package:cos/vehicle_auction/view_model/vehicle_auction_view_model.dart';
 import 'package:flutter/material.dart';
 

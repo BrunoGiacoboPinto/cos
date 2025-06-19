@@ -1,5 +1,5 @@
 import 'package:cos/domain/model/car_auction.dart';
-import 'package:cos/ui/core/ui/vechicle_auction_card.dart';
+import 'package:cos/ui/core/widgets/vechicle_auction_card.dart';
 import 'package:cos/ui/core/ui/theme/spacing.dart';
 import 'package:flutter/widgets.dart';
 
