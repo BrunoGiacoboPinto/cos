@@ -1,8 +1,11 @@
+import 'package:collection/collection.dart';
 import 'package:cos/domain/model/car_auction.dart';
 import 'package:cos/home/widgets/home_screen.dart';
+import 'package:cos/home/widgets/home_screen_appbar.dart';
 import 'package:cos/routing/transitions.dart';
 import 'package:cos/ui/core/ui/theme/button.dart';
 import 'package:cos/ui/core/ui/theme/colors.dart';
+import 'package:cos/ui/core/ui/theme/spacing.dart';
 import 'package:cos/vehicle_auction/widgets/vehicle_auction_screen.dart';
 import 'package:cos/vehicle_auction_detail/vehicle_auction_detail.dart';
 import 'package:flutter/material.dart';
@@ -26,6 +29,10 @@ enum AppRoutes {
       );
     }
   }
+
+  static AppRoutes? fromPath(String path) {
+    return values.firstWhereOrNull((route) => route.path == path);
+  }
 }
 
 GoRouter buildAppRouter(GetIt dependencies) {
@@ -34,7 +41,32 @@ GoRouter buildAppRouter(GetIt dependencies) {
     routes: [
       ShellRoute(
         builder: (context, state, child) {
+          final preferredSize = AppRoutes.auction.path == state.uri.path
+              ? const Size.fromHeight(64.0)
+              : const Size.fromHeight(96.0);
           return Scaffold(
+            appBar: AppRoutes.details.path == state.uri.path
+                ? null
+                : PreferredSize(
+                    preferredSize: preferredSize,
+                    child: Container(
+                      alignment: Alignment.bottomCenter,
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: spaceMd,
+                        vertical: spaceSm,
+                      ),
+                      child: switch (AppRoutes.fromPath(state.uri.path)) {
+                        AppRoutes.home => HomeScreenAppbar(viewModel: dependencies.get()),
+                        AppRoutes.auction => Text(
+                          'Last Auctions',
+                          style: Theme.of(context).textTheme.headlineLarge?.copyWith(
+                            color: lightBlue,
+                          ),
+                        ),
+                        _ => const SizedBox.shrink(),
+                      },
+                    ),
+                  ),
             backgroundColor: Theme.of(context).colorScheme.onSurface,
             body: SafeArea(child: child),
             bottomNavigationBar: Theme(
