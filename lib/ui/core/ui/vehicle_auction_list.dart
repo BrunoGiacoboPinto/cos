@@ -1,5 +1,5 @@
 import 'package:cos/domain/model/car_auction.dart';
-import 'package:cos/ui/core/ui/auction_card.dart';
+import 'package:cos/ui/core/ui/vechicle_auction_card.dart';
 import 'package:cos/ui/core/ui/theme/spacing.dart';
 import 'package:flutter/widgets.dart';
 
@@ -20,7 +20,7 @@ final class VehicleAuctionList extends StatelessWidget {
         final key = models.keys.elementAt(index);
         final model = models[key];
         if (model case CarAuctionWithData(data: final CarAuctionWithDataModel data)) {
-          return AuctionCard(model: data);
+          return VehicleAuctionCard(model: data);
         } else {
           return const SizedBox.shrink();
         }
