@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'colors.dart';
 
 final appBarTheme = AppBarTheme(
@@ -11,8 +10,4 @@ final appBarTheme = AppBarTheme(
   ),
   centerTitle: true,
   iconTheme: IconThemeData(color: lightBlue),
-  systemOverlayStyle: SystemUiOverlayStyle.light.copyWith(
-    statusBarColor: darkGray,
-    statusBarIconBrightness: Brightness.light,
-  ),
 );
