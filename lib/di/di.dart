@@ -1,9 +1,9 @@
 import 'package:cos/data/api/cos_api.dart';
-import 'package:cos/data/cos_data_access_interface.dart';
-import 'package:cos/data/repositories/cos_repository.dart';
-import 'package:cos/data/services/cos_memory_service.dart';
-import 'package:cos/data/services/cos_remote_service.dart';
-import 'package:cos/data/services/cos_storage_service.dart';
+import 'package:cos/data/services/cos/cos_data_access_interface.dart';
+import 'package:cos/data/repositories/cos/cos_repository.dart';
+import 'package:cos/data/services/cos/cos_memory_service.dart';
+import 'package:cos/data/services/cos/cos_remote_service.dart';
+import 'package:cos/data/services/cos/cos_storage_service.dart';
 import 'package:cos/home/view_model/home_view_model.dart';
 import 'package:cos/home/view_model/vni_use_case.dart';
 import 'package:cos/login/view_model/login_view_model.dart';

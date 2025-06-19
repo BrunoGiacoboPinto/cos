@@ -1,4 +1,4 @@
-import 'package:cos/data/cos_data_access_interface.dart';
+import 'package:cos/data/services/cos/cos_data_access_interface.dart';
 import 'package:cos/domain/model/car_auction.dart';
 
 class CosRepository {

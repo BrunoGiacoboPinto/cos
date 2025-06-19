@@ -1,4 +1,4 @@
-import 'package:cos/data/repositories/cos_repository.dart';
+import 'package:cos/data/repositories/cos/cos_repository.dart';
 import 'package:cos/domain/model/car_auction.dart';
 import 'package:flutter/material.dart';
 import 'package:logging/logging.dart';

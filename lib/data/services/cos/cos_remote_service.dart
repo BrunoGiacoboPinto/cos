@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:cos/config/environment.dart';
 import 'package:cos/data/api/cos_api.dart';
-import 'package:cos/data/cos_data_access_interface.dart';
+import 'package:cos/data/services/cos/cos_data_access_interface.dart';
 import 'package:cos/data/model/cos_response.dart';
 import 'package:http/http.dart';
 
