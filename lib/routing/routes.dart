@@ -1,18 +1,31 @@
+import 'package:cos/domain/model/car_auction.dart';
 import 'package:cos/home/widgets/home_screen.dart';
 import 'package:cos/routing/transitions.dart';
 import 'package:cos/ui/core/ui/theme/button.dart';
 import 'package:cos/ui/core/ui/theme/colors.dart';
 import 'package:cos/vehicle_auction/widgets/vehicle_auction_screen.dart';
+import 'package:cos/vehicle_auction_detail/vehicle_auction_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 
 enum AppRoutes {
   home('/home'),
-  auction('/auction');
+  auction('/auction'),
+  details('/details');
 
   const AppRoutes(this.path);
   final String path;
+
+  static int bottomNavigationIndexFor(String path) {
+    if (path == details.path) {
+      return 0;
+    } else {
+      return values.indexWhere(
+        (route) => route.path == path,
+      );
+    }
+  }
 }
 
 GoRouter buildAppRouter(GetIt dependencies) {
@@ -42,9 +55,7 @@ GoRouter buildAppRouter(GetIt dependencies) {
                     label: 'Auctions',
                   ),
                 ],
-                currentIndex: AppRoutes.values.indexWhere(
-                  (route) => route.path == state.uri.path,
-                ),
+                currentIndex: AppRoutes.bottomNavigationIndexFor(state.uri.path),
                 onTap: (index) {
                   context.go(AppRoutes.values[index % AppRoutes.values.length].path);
                 },
@@ -74,6 +85,21 @@ GoRouter buildAppRouter(GetIt dependencies) {
             },
           ),
         ],
+      ),
+      GoRoute(
+        path: AppRoutes.details.path,
+        pageBuilder: (context, state) {
+          final Widget child;
+          if (state.extra case final CarAuctionWithDataModel model?) {
+            child = VehicleAuctionDetail(model: model);
+          } else {
+            child = const Center(
+              child: Text('Fail to get details for the vehicle auction.'),
+            );
+          }
+
+          return MaterialPage(child: child);
+        },
       ),
     ],
   );
