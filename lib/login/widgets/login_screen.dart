@@ -38,7 +38,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void _onLoginSuccess() {
     if (widget.viewModel.state is LoginScreenSuccess) {
-      context.goNamed(AppRoutes.home.path);
+      context.goNamed(AppRoutes.home.name);
     }
   }
 
@@ -63,53 +63,82 @@ class _LoginScreenState extends State<LoginScreen> {
                           fit: BoxFit.cover,
                         ),
                       ),
-                      spacingXl,
-                      TextField(
-                        controller: _emailController,
-                        decoration: InputDecoration(
-                          labelText: 'Email',
-                          border: OutlineInputBorder(),
-                        ),
-                        keyboardType: TextInputType.emailAddress,
-                      ),
-                      spacingLg,
-                      TextField(
-                        controller: _passwordController,
-                        decoration: InputDecoration(
-                          labelText: 'Password',
-                          border: OutlineInputBorder(),
-                        ),
-                        obscureText: true,
+                      ListenableBuilder(
+                        listenable: widget.viewModel,
+                        builder: (context, child) {
+                          return AnimatedSwitcher(
+                            duration: const Duration(milliseconds: 300),
+                            child: switch (widget.viewModel.state) {
+                              LoginScreenInitial() => Column(
+                                children: [
+                                  spacingXl,
+                                  TextField(
+                                    controller: _emailController,
+                                    decoration: InputDecoration(
+                                      labelText: 'Email',
+                                      border: OutlineInputBorder(),
+                                    ),
+                                    keyboardType: TextInputType.emailAddress,
+                                  ),
+                                  spacingLg,
+                                  TextField(
+                                    controller: _passwordController,
+                                    decoration: InputDecoration(
+                                      labelText: 'Password',
+                                      border: OutlineInputBorder(),
+                                    ),
+                                    obscureText: true,
+                                  ),
+                                ],
+                              ),
+                              LoginScreenLoading() => const CircularProgressIndicator(),
+                              LoginScreenError(message: final message) => Text(
+                                message,
+                                style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Colors.red),
+                              ),
+                              LoginScreenSuccess() => const SizedBox.shrink(),
+                            },
+                          );
+                        },
                       ),
                     ],
                   ),
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: spaceMd),
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  minimumSize: Size(MediaQuery.sizeOf(context).width, 50),
-                  backgroundColor: Theme.of(context).colorScheme.secondary,
-                ),
-                onPressed: () async {
-                  if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Please fill in all fields'),
+            ListenableBuilder(
+              listenable: widget.viewModel,
+              builder: (context, child) {
+                if (widget.viewModel.state is LoginScreenInitial) {
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: spaceMd),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: Size(MediaQuery.sizeOf(context).width, 50),
+                        backgroundColor: Theme.of(context).colorScheme.secondary,
                       ),
-                    );
-                    return;
-                  }
+                      onPressed: () async {
+                        if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Please fill in all fields'),
+                            ),
+                          );
+                          return;
+                        }
 
-                  await widget.viewModel.login(
-                    email: _emailController.text,
-                    password: _passwordController.text,
+                        await widget.viewModel.login(
+                          email: _emailController.text,
+                          password: _passwordController.text,
+                        );
+                      },
+                      child: const Text('Login'),
+                    ),
                   );
-                },
-                child: const Text('Login'),
-              ),
+                } else {
+                  return const SizedBox.shrink();
+                }
+              },
             ),
             SizedBox(height: MediaQuery.viewPaddingOf(context).bottom),
           ],
