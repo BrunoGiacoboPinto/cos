@@ -13,3 +13,5 @@ abstract class TestCosServiceReadWriteAccess implements CosServiceReadWriteAcces
 class MockRemoteService extends Mock implements TestCosServiceAccess {}
 class MockLocalService extends Mock implements TestCosServiceReadWriteAccess {}
 class MockMemoryService extends Mock implements TestCosServiceReadWriteAccess {}
+
+class MockCosRepository extends Mock {}
