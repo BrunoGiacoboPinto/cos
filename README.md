@@ -4,11 +4,10 @@ This project implements all required features defined by the [CarOnSale Flutter 
 
 <center style="margin: 24px auto;">
 <video width="332" height="720" controls>
-  <source src="car_on_sale_app_demo.mp4" type="video/mp4">
+  <source src="https://github.com/BrunoGiacoboPinto/cos/blob/main/car_on_sale_app_demo.mp4" type="video/mp4">
   Your browser does not support the video tag.
 </video>
 </center>
-
 
 ## App Architecture & Coding Guidelines
 
