@@ -1,7 +1,7 @@
 import 'package:cos/data/services/login/login_service.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
-import '../../../testing/mocks/mocks.dart';
+import '../../../../testing/mocks/mocks.dart';
 
 void main() {
   late SharedPreferencesAsyncMock sharedPreferencesMock;
