@@ -33,6 +33,7 @@ dev_dependencies:
   freezed: ^3.0.6
   icons_launcher: ^3.0.1
   json_serializable: ^6.9.5
+  mocktail: ^1.0.4
 
 flutter:
   uses-material-design: true
