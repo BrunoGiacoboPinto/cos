@@ -4,10 +4,12 @@ import 'dart:convert';
 import 'package:cos/data/services/cos/cos_data_access_interface.dart';
 import 'package:cos/domain/model/car_auction.dart';
 import 'package:logging/logging.dart';
+import 'package:meta/meta.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final class CosStorageService implements CosServiceReadWriteAccess<CarAuctionModel> {
-  CosStorageService() {
+  CosStorageService({@visibleForTesting SharedPreferencesAsync? sharedPreferences})
+      : _sharedPreferences = sharedPreferences ?? SharedPreferencesAsync() {
     _allowedKeysCompleter = Completer<void>();
     _allowedKeysCompleter.complete(
       _sharedPreferences.getStringList(_kCarAuctionStorageKeys).then(
@@ -22,7 +24,7 @@ final class CosStorageService implements CosServiceReadWriteAccess<CarAuctionMod
   static const String _kCarAuctionStorageKeys = 'car_auction_storage_keys';
   static final _logger = Logger('CosStorageService');
 
-  late final _sharedPreferences = SharedPreferencesAsync();
+  late final SharedPreferencesAsync _sharedPreferences;
   late final Set<String> _allowedKeys = {};
   late final Completer<void> _allowedKeysCompleter;
 
